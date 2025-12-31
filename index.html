@@ -94,3 +94,106 @@
   .secret.show{display:block;}
 </style>
 
+
+<script>
+  // Typewriter
+  const lines = [
+    "Eva & Akhil 💞",
+    "I love you ❤️",
+    "Hiiiiiiiiiiiiiiiiiiiiiiiii baby …",
+    "… i made this while i should be studying but i thought of u"
+  ];
+  const el = document.getElementById("type");
+  let li=0, ci=0, deleting=false;
+  function typeLoop(){
+    const text = lines[li];
+    if(!deleting){
+      el.textContent = text.slice(0, ++ci);
+      if(ci === text.length){ deleting=true; setTimeout(typeLoop, 900); return; }
+    } else {
+      el.textContent = text.slice(0, --ci);
+      if(ci === 0){ deleting=false; li=(li+1)%lines.length; }
+    }
+    setTimeout(typeLoop, deleting ? 25 : 45);
+  }
+  typeLoop();
+
+  // Envelope open + secret
+  const openBtn = document.getElementById("openBtn");
+  const envelope = document.getElementById("envelope");
+  const secret = document.getElementById("secret");
+  openBtn.addEventListener("click", () => {
+    envelope.classList.add("show");
+    setTimeout(()=> envelope.classList.toggle("open"), 50);
+    setTimeout(()=> secret.classList.toggle("show"), 650);
+    burstHearts(window.innerWidth/2, window.innerHeight/2, 18);
+  });
+
+  // Floating hearts spawner
+  const heartEmojis = ["💗","💞","💖","💘","💝","💕","❤️"];
+  function spawnHeart(x){
+    const h = document.createElement("div");
+    h.className="heart";
+    h.textContent = heartEmojis[(Math.random()*heartEmojis.length)|0];
+    h.style.left = x + "px";
+    h.style.top = (window.innerHeight + 20) + "px";
+    h.style.fontSize = (14 + Math.random()*18) + "px";
+    h.style.animationDuration = (4 + Math.random()*3) + "s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(), 8000);
+  }
+  function burstHearts(x,y,n){
+    for(let i=0;i<n;i++){
+      const h=document.createElement("div");
+      h.className="heart";
+      h.textContent=heartEmojis[(Math.random()*heartEmojis.length)|0];
+      h.style.left = (x + (Math.random()*180-90))+"px";
+      h.style.top = (y + (Math.random()*80-40))+"px";
+      h.style.fontSize=(16+Math.random()*22)+"px";
+      h.style.animationDuration=(2.2+Math.random()*1.6)+"s";
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(), 5000);
+    }
+  }
+  setInterval(()=> spawnHeart(Math.random()*window.innerWidth), 650);
+  window.addEventListener("click",(e)=> burstHearts(e.clientX,e.clientY,10));
+
+  // Sparkle cursor trail (canvas)
+  const c = document.getElementById("sparkles");
+  const ctx = c.getContext("2d");
+  let W,H; function resize(){ W=c.width=window.innerWidth; H=c.height=window.innerHeight; }
+  window.addEventListener("resize", resize); resize();
+
+  const particles = [];
+  function addSparkle(x,y){
+    for(let i=0;i<3;i++){
+      particles.push({
+        x,y,
+        vx:(Math.random()*2-1)*1.8,
+        vy:(Math.random()*2-1)*1.8,
+        life:1,
+        r:1+Math.random()*2.2
+      });
+    }
+  }
+  window.addEventListener("mousemove",(e)=> addSparkle(e.clientX,e.clientY));
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=particles.length-1;i>=0;i--){
+      const p=particles[i];
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.03; p.life-=0.03;
+      if(p.life<=0){ particles.splice(i,1); continue; }
+      ctx.globalAlpha = Math.max(p.life,0);
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle = "white";
+      ctx.fill();
+    }
+    ctx.globalAlpha=1;
+    requestAnimationFrame(draw);
+  }
+  draw();
+</script>
+
+
+
