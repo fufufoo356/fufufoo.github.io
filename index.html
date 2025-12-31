@@ -13,8 +13,14 @@
     .openBtn{border:0;background:#ff5c8a;color:#fff;font-weight:800;padding:12px 16px;border-radius:14px;cursor:pointer;box-shadow:0 10px 25px rgba(255,92,138,.35)}
     .openBtn:active{transform:translateY(1px)}
     .hint{display:block;margin-top:10px;opacity:.65}
+
     .heart{position:fixed;left:0;top:0;z-index:40;pointer-events:none;font-size:18px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.12));animation:floatUp linear forwards}
-    @keyframes floatUp{from{transform:translate(-50%,0) scale(.9);opacity:0}10%{opacity:1}to{transform:translate(-50%,-110vh) scale(1.6);opacity:0}}
+    @keyframes floatUp{
+      from{transform:translate(-50%,0) scale(.9);opacity:0}
+      10%{opacity:1}
+      to{transform:translate(-50%,-110vh) scale(1.6);opacity:0}
+    }
+
     .envelope{position:relative;width:320px;height:210px;margin:18px auto 0;display:none}
     .envelope.show{display:block}
     .paper{position:absolute;left:50%;bottom:12px;transform:translateX(-50%) translateY(80px);width:86%;background:#fff;border-radius:14px;padding:16px;box-shadow:0 12px 30px rgba(0,0,0,.18);transition:transform .7s cubic-bezier(.2,.9,.2,1)}
@@ -47,86 +53,118 @@
       </div>
 
       <div id="secret" class="secret">
-        “I love you ❤️ Open this when you’re mad at me. I made it for you because I love you so can I have 5 diamond cartier ples dadi💗.” 
+        “I love you ❤️ Open this when you’re mad at me. I made it for you because I love you so can I have 5 diamond cartier ples dadi💗.”
       </div>
     </div>
   </div>
 
   <script>
     // Typewriter
-    const lines=[
+    const lines = [
       "Eva & Akhil 💞",
       "I love you ❤️",
       "Hiiiiiiiiiiiiiiiiiiiiiiiii baby",
-      "I made this while I should be studying but I thought of u 💗"
+      "I made this while I should be studying but I thought of u 💗",
       "This is where I will send u letters and updates on us and ill wait for u to check it always I messed up the code a little sorry💗actually im charging u 20k for this thanks goodbye and ill alwways love u remember that when u check this website spent days making it"
     ];
-    const el=document.getElementById("type");
-    let li=0,ci=0,del=false;
+
+    const el = document.getElementById("type");
+    let li = 0, ci = 0, del = false;
+
     (function loop(){
-      const t=lines[li];
-      el.textContent=t.slice(0, del?--ci:++ci);
-      if(!del && ci===t.length){del=true; return setTimeout(loop,900)}
-      if(del && ci===0){del=false; li=(li+1)%lines.length}
-      setTimeout(loop, del?25:45);
+      const t = lines[li];
+      el.textContent = t.slice(0, del ? --ci : ++ci);
+
+      if (!del && ci === t.length) { del = true; return setTimeout(loop, 900); }
+      if (del && ci === 0) { del = false; li = (li + 1) % lines.length; }
+
+      setTimeout(loop, del ? 25 : 45);
     })();
 
     // Envelope + secret
-    const openBtn=document.getElementById("openBtn");
-    const envelope=document.getElementById("envelope");
-    const secret=document.getElementById("secret");
-    openBtn.addEventListener("click",()=>{
+    const openBtn = document.getElementById("openBtn");
+    const envelope = document.getElementById("envelope");
+    const secret = document.getElementById("secret");
+
+    openBtn.addEventListener("click", () => {
       envelope.classList.add("show");
-      setTimeout(()=>envelope.classList.toggle("open"),50);
-      setTimeout(()=>secret.classList.toggle("show"),650);
-      burstHearts(innerWidth/2, innerHeight/2, 18);
+      setTimeout(() => envelope.classList.toggle("open"), 50);
+      setTimeout(() => secret.classList.toggle("show"), 650);
+      burstHearts(innerWidth / 2, innerHeight / 2, 18);
     });
 
     // Floating hearts
-    const heartEmojis=["💗","💞","💖","💘","💝","💕","❤️"];
+    const heartEmojis = ["💗","💞","💖","💘","💝","💕","❤️"];
+
     function spawnHeart(x){
-      const h=document.createElement("div");
-      h.className="heart";
-      h.textContent=heartEmojis[(Math.random()*heartEmojis.length)|0];
-      h.style.left=x+"px";
-      h.style.top=(innerHeight+20)+"px";
-      h.style.fontSize=(14+Math.random()*18)+"px";
-      h.style.animationDuration=(4+Math.random()*3)+"s";
+      const h = document.createElement("div");
+      h.className = "heart";
+      h.textContent = heartEmojis[(Math.random() * heartEmojis.length) | 0];
+      h.style.left = x + "px";
+      h.style.top = (innerHeight + 20) + "px";
+      h.style.fontSize = (14 + Math.random() * 18) + "px";
+      h.style.animationDuration = (4 + Math.random() * 3) + "s";
       document.body.appendChild(h);
-      setTimeout(()=>h.remove(),8000);
+      setTimeout(() => h.remove(), 8000);
     }
-    function burstHearts(x,y,n){
-      for(let i=0;i<n;i++){
-        const h=document.createElement("div");
-        h.className="heart";
-        h.textContent=heartEmojis[(Math.random()*heartEmojis.length)|0];
-        h.style.left=(x+(Math.random()*180-90))+"px";
-        h.style.top=(y+(Math.random()*80-40))+"px";
-        h.style.fontSize=(16+Math.random()*22)+"px";
-        h.style.animationDuration=(2.2+Math.random()*1.6)+"s";
+
+    function burstHearts(x, y, n){
+      for (let i = 0; i < n; i++){
+        const h = document.createElement("div");
+        h.className = "heart";
+        h.textContent = heartEmojis[(Math.random() * heartEmojis.length) | 0];
+        h.style.left = (x + (Math.random() * 180 - 90)) + "px";
+        h.style.top = (y + (Math.random() * 80 - 40)) + "px";
+        h.style.fontSize = (16 + Math.random() * 22) + "px";
+        h.style.animationDuration = (2.2 + Math.random() * 1.6) + "s";
         document.body.appendChild(h);
-        setTimeout(()=>h.remove(),5000);
+        setTimeout(() => h.remove(), 5000);
       }
     }
-    setInterval(()=>spawnHeart(Math.random()*innerWidth),650);
-    addEventListener("click",e=>burstHearts(e.clientX,e.clientY,10));
+
+    setInterval(() => spawnHeart(Math.random() * innerWidth), 650);
+    addEventListener("click", e => burstHearts(e.clientX, e.clientY, 10));
 
     // Sparkle cursor trail
-    const c=document.getElementById("sparkles"),ctx=c.getContext("2d");
-    let W,H; function resize(){W=c.width=innerWidth;H=c.height=innerHeight} addEventListener("resize",resize); resize();
-    const p=[];
-    function addSparkle(x,y){for(let i=0;i<3;i++)p.push({x,y,vx:(Math.random()*2-1)*1.8,vy:(Math.random()*2-1)*1.8,life:1,r:1+Math.random()*2.2});}
-    addEventListener("mousemove",e=>addSparkle(e.clientX,e.clientY));
-    (function draw(){
-      ctx.clearRect(0,0,W,H);
-      for(let i=p.length-1;i>=0;i--){
-        const s=p[i]; s.x+=s.vx; s.y+=s.vy; s.vy+=0.03; s.life-=0.03;
-        if(s.life<=0){p.splice(i,1);continue}
-        ctx.globalAlpha=Math.max(s.life,0);
-        ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-        ctx.fillStyle="white"; ctx.fill();
+    const c = document.getElementById("sparkles");
+    const ctx = c.getContext("2d");
+    let W, H;
+
+    function resize(){
+      W = c.width = innerWidth;
+      H = c.height = innerHeight;
+    }
+    addEventListener("resize", resize);
+    resize();
+
+    const p = [];
+    function addSparkle(x, y){
+      for (let i = 0; i < 3; i++){
+        p.push({
+          x, y,
+          vx: (Math.random() * 2 - 1) * 1.8,
+          vy: (Math.random() * 2 - 1) * 1.8,
+          life: 1,
+          r: 1 + Math.random() * 2.2
+        });
       }
-      ctx.globalAlpha=1; requestAnimationFrame(draw);
+    }
+    addEventListener("mousemove", e => addSparkle(e.clientX, e.clientY));
+
+    (function draw(){
+      ctx.clearRect(0, 0, W, H);
+      for (let i = p.length - 1; i >= 0; i--){
+        const s = p[i];
+        s.x += s.vx; s.y += s.vy; s.vy += 0.03; s.life -= 0.03;
+        if (s.life <= 0){ p.splice(i, 1); continue; }
+        ctx.globalAlpha = Math.max(s.life, 0);
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = "white";
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(draw);
     })();
   </script>
 </body>
