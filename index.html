@@ -6,25 +6,33 @@
 <title>Eva & Akhil ❤️</title>
 
 <style>
-/* Slow fade-in */
+/* Fade-in */
 html,body{height:100%}
 body{
-  margin:0;min-height:100vh;background:#ffe6f0;font-family:Arial,sans-serif;overflow:hidden;
+  margin:0;min-height:100vh;background:#ffe6f0;font-family:Arial,sans-serif;
+  overflow:auto; -webkit-overflow-scrolling:touch; /* <-- phone scroll fix */
   opacity:0; transition:opacity 1.2s ease;
 }
 body.loaded{opacity:1}
 
 #sparkles{position:fixed;inset:0;pointer-events:none;z-index:50}
-.wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+
+/* Layout: allow scroll instead of centered-lock */
+.wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:flex-start;          /* <-- important for mobile scrolling */
+  justify-content:center;
+  padding:24px;
+}
 .card{
   background:white;width:min(560px,92vw);padding:26px;border-radius:22px;
-  box-shadow:0 18px 55px rgba(0,0,0,.15);text-align:center;position:relative;z-index:2
+  box-shadow:0 18px 55px rgba(0,0,0,.15);text-align:center;position:relative;z-index:2;
+  margin:18px 0 60px;             /* space for scroll */
 }
 .type{font-size:22px;font-weight:800;color:#c2255c;min-height:64px;margin:0 0 10px}
 
-button, select{
-  border:0;border-radius:14px;padding:10px 14px;font-weight:800;cursor:pointer
-}
+button, select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;cursor:pointer}
 .openBtn{background:#ff5c8a;color:white;box-shadow:0 10px 25px rgba(255,92,138,.35)}
 .madBtn{background:#adb5bd;color:white;margin-top:10px}
 .madBtn.love{background:#ff5c8a}
@@ -36,10 +44,12 @@ button, select{
 
 .hint{display:block;margin-top:6px;opacity:.65}
 #timeMsg{margin:6px 0 0;color:#555}
+
 #dailyQuote{margin:10px 0 0;color:#555;background:#fff0f6;border-radius:14px;padding:10px}
 #dailyQuote b{color:#c2255c}
 
 .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;align-items:center;margin-top:12px}
+.pill{display:inline-block;background:#fff0f6;border-radius:999px;padding:8px 12px;font-weight:800;color:#c2255c}
 
 .heart{
   position:fixed;z-index:40;pointer-events:none;font-size:18px;
@@ -78,19 +88,14 @@ button, select{
 #countdownBox{margin-top:14px;padding:12px;border-radius:14px;background:#fff0f6}
 #crMeme{display:none;width:120px;margin:10px auto;border-radius:12px}
 
-/* Read-when letters */
-.letters{margin-top:14px;text-align:left}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:10px}
-.tabBtn{background:#f1f3f5}
-.tabBtn.active{background:#ff5c8a;color:white}
-.letterBox{
-  background:#fff0f6;border-radius:16px;padding:12px;
-  box-shadow:0 10px 25px rgba(0,0,0,.06)
-}
-.letterTitle{font-weight:900;color:#c2255c;margin:0 0 6px}
-.letterText{margin:0;color:#444;line-height:1.35}
+/* Timeline */
+.timeline{margin-top:14px;text-align:left;background:#fff0f6;border-radius:16px;padding:12px}
+.timeline h3{margin:0 0 8px;color:#c2255c}
+.tItem{display:flex;gap:10px;align-items:flex-start;margin:8px 0}
+.dot{width:10px;height:10px;border-radius:50%;background:#ff5c8a;margin-top:5px;flex:0 0 auto}
+.tText{color:#444}
 
-/* Shiny promise list */
+/* Promises (shine) */
 .shineBox{
   margin-top:14px;text-align:left;position:relative;overflow:hidden;
   background:linear-gradient(135deg,#fff0f6,#ffe6f0);
@@ -104,30 +109,79 @@ button, select{
   transform:rotate(20deg);
   animation:shine 2.8s infinite;
 }
-@keyframes shine{
-  0%{left:-80%}
-  100%{left:140%}
-}
+@keyframes shine{0%{left:-80%}100%{left:140%}}
 .shineBox h3{margin:0 0 8px;color:#c2255c}
 .shineBox ul{margin:0;padding-left:18px;color:#444}
 .small{font-size:13px;color:#666;margin-top:6px}
 
-/* Timeline */
-.timeline{margin-top:14px;text-align:left;background:#fff0f6;border-radius:16px;padding:12px}
-.timeline h3{margin:0 0 8px;color:#c2255c}
-.tItem{display:flex;gap:10px;align-items:flex-start;margin:8px 0}
-.dot{width:10px;height:10px;border-radius:50%;background:#ff5c8a;margin-top:5px;flex:0 0 auto}
-.tText{color:#444}
+/* SIDE LETTER SCROLLS */
+.sideLetters{
+  position:fixed; right:12px; top:110px; z-index:80;
+  display:flex; flex-direction:column; gap:10px;
+}
+.sideBtn{
+  background:#ff5c8a; color:white; border-radius:999px;
+  padding:10px 12px; font-weight:900; box-shadow:0 10px 25px rgba(255,92,138,.35);
+}
+.sideBtn:active{transform:translateY(1px)}
+@media (max-width:420px){
+  .sideLetters{right:8px; top:90px}
+  .sideBtn{padding:9px 10px; font-size:13px}
+}
 
-/* Sound + stats */
-.pill{
-  display:inline-block;background:#fff0f6;border-radius:999px;padding:8px 12px;font-weight:800;color:#c2255c
+/* Slide-out panel */
+.drawerOverlay{
+  position:fixed; inset:0; background:rgba(0,0,0,.25);
+  display:none; z-index:90;
+}
+.drawerOverlay.show{display:block}
+.drawer{
+  position:fixed; top:0; right:0; height:100%; width:min(420px,92vw);
+  transform:translateX(110%); transition:transform .25s ease;
+  z-index:100;
+  padding:18px 14px 18px;
+  display:flex; flex-direction:column; gap:10px;
+}
+.drawer.show{transform:translateX(0)}
+/* Scroll look */
+.scrollCard{
+  background:linear-gradient(180deg,#fff7fb,#ffe6f0);
+  border-radius:18px;
+  box-shadow:0 18px 55px rgba(0,0,0,.20);
+  padding:14px 14px 16px;
+  position:relative;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.scrollTop{
+  font-weight:900;color:#c2255c;margin:0 0 8px;font-size:18px
+}
+.scrollText{margin:0;color:#444;line-height:1.45;white-space:pre-wrap}
+.drawerClose{
+  align-self:flex-end; background:#fff0f6; border-radius:14px; font-weight:900;
 }
 </style>
 </head>
 
 <body>
 <canvas id="sparkles"></canvas>
+
+<!-- Side scroll buttons -->
+<div class="sideLetters">
+  <button class="sideBtn" data-letter="mad">mad 😠</button>
+  <button class="sideBtn" data-letter="sad">sad 😔</button>
+  <button class="sideBtn" data-letter="miss">miss 🥺</button>
+</div>
+
+<!-- Drawer -->
+<div id="drawerOverlay" class="drawerOverlay"></div>
+<div id="drawer" class="drawer" aria-hidden="true">
+  <button id="drawerClose" class="drawerClose">close ✖</button>
+  <div class="scrollCard">
+    <div id="drawerTitle" class="scrollTop"></div>
+    <p id="drawerText" class="scrollText"></p>
+  </div>
+</div>
 
 <div class="wrap">
   <div class="card" id="card">
@@ -140,7 +194,7 @@ button, select{
       <div id="quoteText" style="margin-top:6px;"></div>
     </div>
 
-    <div class="row" style="margin-top:12px;">
+    <div class="row">
       <span class="pill">Hearts: <span id="heartCount">0</span> 💞</span>
       <button id="apologyBtn" class="smallBtn">apology generator 🥺</button>
       <button id="rainBtn" class="smallBtn">rain: off 🌧️</button>
@@ -177,24 +231,6 @@ button, select{
       <div id="countdown" style="font-size:18px;margin-top:6px;">Loading…</div>
     </div>
 
-    <!-- Read-when letters -->
-    <div class="letters">
-      <div class="tabs">
-        <button class="tabBtn active" data-tab="mad">Read when you’re mad 😠</button>
-        <button class="tabBtn" data-tab="sad">Read when you’re sad 😔</button>
-        <button class="tabBtn" data-tab="miss">Read when you miss me 🥺</button>
-        <button class="tabBtn" data-tab="sleep">Read when you can’t sleep 🌙</button>
-      </div>
-
-      <div class="letterBox" id="letterBox">
-        <p class="letterTitle" id="letterTitle">Read when you’re mad 😠</p>
-        <p class="letterText" id="letterText">
-          I know you’re upset. Take a breath. I love you. I’m here and I’m not going anywhere. 💗
-        </p>
-      </div>
-      <div class="small">Switch the tabs whenever you want.</div>
-    </div>
-
     <!-- Timeline -->
     <div class="timeline">
       <h3>Timeline of us 💞</h3>
@@ -202,7 +238,7 @@ button, select{
       <div class="tItem"><div class="dot"></div><div class="tText"><b>Halloween:</b> we started dating 🎃💕</div></div>
     </div>
 
-    <!-- Promise list -->
+    <!-- Promise list (exactly like you asked: blanks + the one promise) -->
     <div class="shineBox">
       <h3>Promise list ✨</h3>
       <ul>
@@ -248,38 +284,37 @@ document.getElementById("timeMsg").textContent =
   (hour>=18 || hour<5) ? "Goodnight my love 🌙" :
   "Thinking of you 💗";
 
-/* DAILY LOVE QUOTE (changes daily, stable per day) */
-const quotes = [
-  "If I could keep you in my pocket I would. ( respectfully) 💗",
-  "You are my favorite person.",
-  "I’m proud of you. Always.",
-  "Even when we’re arguing… I still choose you.",
-  "I love you more than I love being right. (sometimes) 😭",
-  "You’re my safe place.",
-  "Your smile lights up my entire world.",
-  "lets have seg.",
-  "I hope today is kind to you.",
-  "I’m inside u. Always.",
+/* DAILY LOVE QUOTE */
+const quotes=[
+  "You are my favorite notification.",
+  "I’m on your team. Always.",
   "I love you in every mood.",
-  "You + me = home."
+  "You + me = home.",
+  "Even when we’re annoyed… I still choose you."
 ];
-
 function dayKey(d=new Date()){
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 }
-const todayKey = dayKey();
-let savedQuoteKey = localStorage.getItem("evaQuoteDay");
-let savedQuote = localStorage.getItem("evaQuoteText");
-
-if(savedQuoteKey !== todayKey || !savedQuote){
-  // deterministic-ish pick
-  const seed = (new Date().getFullYear()*10000) + ((new Date().getMonth()+1)*100) + new Date().getDate();
-  const idx = seed % quotes.length;
-  savedQuote = quotes[idx];
-  localStorage.setItem("evaQuoteDay", todayKey);
-  localStorage.setItem("evaQuoteText", savedQuote);
+const todayKey=dayKey();
+let savedQuoteKey=localStorage.getItem("evaQuoteDay");
+let savedQuote=localStorage.getItem("evaQuoteText");
+if(savedQuoteKey!==todayKey || !savedQuote){
+  const seed=(new Date().getFullYear()*10000)+((new Date().getMonth()+1)*100)+new Date().getDate();
+  savedQuote=quotes[seed%quotes.length];
+  localStorage.setItem("evaQuoteDay",todayKey);
+  localStorage.setItem("evaQuoteText",savedQuote);
 }
-document.getElementById("quoteText").textContent = savedQuote;
+document.getElementById("quoteText").textContent=savedQuote;
+
+/* Heart counter */
+const heartCountEl=document.getElementById("heartCount");
+let heartCount=Number(localStorage.getItem("evaHeartCount")||"0");
+function addHearts(n){
+  heartCount+=n;
+  localStorage.setItem("evaHeartCount",String(heartCount));
+  heartCountEl.textContent=String(heartCount);
+}
+heartCountEl.textContent=String(heartCount);
 
 /* Envelope + secret */
 const openBtn=document.getElementById("openBtn");
@@ -292,7 +327,7 @@ openBtn.addEventListener("click", ()=>{
   burstHearts(innerWidth/2, innerHeight/2, 18);
 });
 
-/* STILL MAD BUTTON + meme + heartbeat */
+/* Still mad button + meme + heartbeat */
 const madBtn=document.getElementById("madBtn");
 const crMeme=document.getElementById("crMeme");
 const card=document.getElementById("card");
@@ -302,30 +337,28 @@ madBtn.addEventListener("click", ()=>{
   madBtn.textContent=mad?"still mad? 😠":"ok fine I love you ❤️";
   madBtn.classList.toggle("love",!mad);
   card.classList.toggle("heartbeat",!mad);
-  crMeme.style.display = mad ? "none" : "block";
+  crMeme.style.display=mad?"none":"block";
 });
 
-/* LOVE METER */
+/* Love meter */
 const loveMeter=document.getElementById("loveMeter");
 const loveLabel=document.getElementById("loveLabel");
 loveMeter.addEventListener("input", ()=>{
   loveMeter.value=Math.min(100, +loveMeter.value + 5);
-  loveLabel.textContent = (loveMeter.value==100) ? "100% obsessed 💘" : loveMeter.value + "%";
+  loveLabel.textContent=(loveMeter.value==100)?"100% obsessed 💘":loveMeter.value+"%";
 });
 
-/* COUNTDOWN TO JAN 12 (next occurrence) */
+/* Countdown */
 const cdEl=document.getElementById("countdown");
 function getNextJan12(){
-  const now=new Date();
-  const y=now.getFullYear();
+  const now=new Date(), y=now.getFullYear();
   let t=new Date(y,0,12,0,0,0);
   if(now>t) t=new Date(y+1,0,12,0,0,0);
   return t;
 }
 const target=getNextJan12();
 function tickCountdown(){
-  const now=new Date();
-  let diff=target-now;
+  const now=new Date(), diff=target-now;
   if(diff<=0){ cdEl.textContent="IT’S JANUARY 12 🎉💗"; return; }
   const total=Math.floor(diff/1000);
   const d=Math.floor(total/86400);
@@ -334,20 +367,9 @@ function tickCountdown(){
   const s=total%60;
   cdEl.textContent=`${d}d ${h}h ${m}m ${s}s`;
 }
-tickCountdown();
-setInterval(tickCountdown,1000);
+tickCountdown(); setInterval(tickCountdown,1000);
 
-/* HEART COUNTER (counts bursts + auto hearts) */
-const heartCountEl = document.getElementById("heartCount");
-let heartCount = Number(localStorage.getItem("evaHeartCount") || "0");
-function addHearts(n){
-  heartCount += n;
-  localStorage.setItem("evaHeartCount", String(heartCount));
-  heartCountEl.textContent = String(heartCount);
-}
-heartCountEl.textContent = String(heartCount);
-
-/* FLOATING HEARTS */
+/* Floating hearts */
 const heartEmojis=["💗","💞","💖","💘","💕","❤️"];
 function spawnHeart(x,y){
   const h=document.createElement("div");
@@ -361,164 +383,120 @@ function spawnHeart(x,y){
   setTimeout(()=>h.remove(),6000);
 }
 function burstHearts(x,y,n){
-  for(let k=0;k<n;k++){
-    spawnHeart(x+(Math.random()*180-90), y+(Math.random()*80-40));
-  }
+  for(let k=0;k<n;k++) spawnHeart(x+(Math.random()*180-90), y+(Math.random()*80-40));
   addHearts(n);
 }
-setInterval(()=>{ spawnHeart(Math.random()*innerWidth, innerHeight+20); addHearts(1); }, 850);
-addEventListener("click", e=>burstHearts(e.clientX,e.clientY,10));
+setInterval(()=>{ spawnHeart(Math.random()*innerWidth, innerHeight+20); addHearts(1); }, 900);
+addEventListener("click", e=>burstHearts(e.clientX,e.clientY,10), {passive:true});
 
-/* READ-WHEN LETTERS (tabs) */
-const letters = {
-  mad: {
-    title: "Read when you’re mad 😠",
-    text: "I know you’re upset. Take a breath. I love you. I’m here and I’m not going anywhere. 💗"
-  },
-  sad: {
-    title: "Read when you’re sad 😔",
-    text: "Come here. I love you so much. You don’t have to carry it alone. I’m with you, always. 😔💙"
-  },
-  miss: {
-    title: "Read when you miss me 🥺",
-    text: "I miss you too. I’m thinking about you right now. Pretend this is a hug from me to you. 🥺💗"
-  },
-  sleep: {
-    title: "Read when you can’t sleep 🌙",
-    text: "Close your eyes. Breathe slowly. You are safe and loved. I’m proud of you. Goodnight baby 🌙"
-  }
-};
-const tabBtns = document.querySelectorAll(".tabBtn");
-const letterTitle = document.getElementById("letterTitle");
-const letterText = document.getElementById("letterText");
-
-function setLetter(key){
-  tabBtns.forEach(b=>b.classList.toggle("active", b.dataset.tab===key));
-  letterTitle.textContent = letters[key].title;
-  letterText.textContent = letters[key].text;
-}
-tabBtns.forEach(btn=>btn.addEventListener("click", ()=>setLetter(btn.dataset.tab)));
-setLetter("mad");
-
-/* APOLOGY GENERATOR */
-const apologyBtn = document.getElementById("apologyBtn");
-const apologyOut = document.getElementById("apologyOut");
-const apologies = [
+/* Apology generator */
+const apologyBtn=document.getElementById("apologyBtn");
+const apologyOut=document.getElementById("apologyOut");
+const apologies=[
   "im sorry my love i never mean to hurt you or make you feel sad.",
-  "im sorry baby. i love you and i always love you even if we're disagreeing over something. 🥺",
-  "im sorry my love. you matter to me more than something silly. 💗",
-  "im sorry. i want to fix it, not fight. i love you."
+  "im sorry baby. i love you and i’m listening. come here 🥺",
+  "im sorry my love. you matter to me more than my ego. 💗"
 ];
 apologyBtn.addEventListener("click", ()=>{
-  const pick = apologies[(Math.random()*apologies.length)|0];
   apologyOut.style.display="block";
-  apologyOut.textContent = pick;
+  apologyOut.textContent=apologies[(Math.random()*apologies.length)|0];
 });
 
-/* CALM RAIN + PIANO (generated in-browser, no audio files needed) */
-let audioCtx = null;
-let rainOn = false, pianoOn = false;
-let rainNode = null, rainGain = null;
-let pianoTimer = null;
-
-function ensureAudio(){
-  if(!audioCtx){
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-}
+/* Rain + Piano (generated in-browser) */
+let audioCtx=null, rainOn=false, pianoOn=false, rainNode=null, rainGain=null, pianoTimer=null;
+function ensureAudio(){ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }
 
 function startRain(){
   ensureAudio();
-  const bufferSize = 2 * audioCtx.sampleRate;
-  const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-  const output = noiseBuffer.getChannelData(0);
-  for(let i=0;i<bufferSize;i++) output[i] = Math.random()*2-1;
+  const bufferSize=2*audioCtx.sampleRate;
+  const noiseBuffer=audioCtx.createBuffer(1,bufferSize,audioCtx.sampleRate);
+  const out=noiseBuffer.getChannelData(0);
+  for(let k=0;k<bufferSize;k++) out[k]=Math.random()*2-1;
+  const white=audioCtx.createBufferSource(); white.buffer=noiseBuffer; white.loop=true;
 
-  const white = audioCtx.createBufferSource();
-  white.buffer = noiseBuffer;
-  white.loop = true;
+  const filter=audioCtx.createBiquadFilter();
+  filter.type="lowpass"; filter.frequency.value=900;
 
-  // filter for softer rain
-  const filter = audioCtx.createBiquadFilter();
-  filter.type = "lowpass";
-  filter.frequency.value = 900;
-
-  rainGain = audioCtx.createGain();
-  rainGain.gain.value = 0.0;
-
-  white.connect(filter);
-  filter.connect(rainGain);
-  rainGain.connect(audioCtx.destination);
-
-  white.start();
-  rainNode = white;
-
-  // fade in
-  rainGain.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 0.6);
+  rainGain=audioCtx.createGain(); rainGain.gain.value=0.0;
+  white.connect(filter); filter.connect(rainGain); rainGain.connect(audioCtx.destination);
+  white.start(); rainNode=white;
+  rainGain.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime+0.6);
 }
-
 function stopRain(){
-  if(rainGain){
-    rainGain.gain.linearRampToValueAtTime(0.0, audioCtx.currentTime + 0.4);
-  }
-  setTimeout(()=>{
-    try{ if(rainNode) rainNode.stop(); }catch(e){}
-    rainNode=null; rainGain=null;
-  }, 500);
+  if(rainGain) rainGain.gain.linearRampToValueAtTime(0.0, audioCtx.currentTime+0.4);
+  setTimeout(()=>{ try{rainNode&&rainNode.stop()}catch(e){} rainNode=null; rainGain=null; },500);
 }
-
 function playPianoNote(freq, when, dur){
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.type = "triangle";
-  osc.frequency.value = freq;
-
-  // envelope
-  gain.gain.setValueAtTime(0.0001, when);
-  gain.gain.exponentialRampToValueAtTime(0.08, when + 0.02);
-  gain.gain.exponentialRampToValueAtTime(0.0001, when + dur);
-
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-  osc.start(when);
-  osc.stop(when + dur + 0.02);
+  const osc=audioCtx.createOscillator();
+  const gain=audioCtx.createGain();
+  osc.type="triangle"; osc.frequency.value=freq;
+  gain.gain.setValueAtTime(0.0001,when);
+  gain.gain.exponentialRampToValueAtTime(0.08,when+0.02);
+  gain.gain.exponentialRampToValueAtTime(0.0001,when+dur);
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.start(when); osc.stop(when+dur+0.02);
 }
-
 function startPiano(){
   ensureAudio();
-  const scale = [261.63, 293.66, 329.63, 392.00, 440.00]; // C D E G A
-  let step = 0;
-  pianoTimer = setInterval(()=>{
-    const now = audioCtx.currentTime;
-    const f1 = scale[step % scale.length];
-    const f2 = scale[(step+2) % scale.length] / 2;
-    playPianoNote(f1, now, 0.6);
-    playPianoNote(f2, now, 0.8);
+  const scale=[261.63,293.66,329.63,392.00,440.00]; // C D E G A
+  let step=0;
+  pianoTimer=setInterval(()=>{
+    const now=audioCtx.currentTime;
+    const f1=scale[step%scale.length];
+    const f2=scale[(step+2)%scale.length]/2;
+    playPianoNote(f1,now,0.6);
+    playPianoNote(f2,now,0.8);
     step++;
-  }, 900);
+  },900);
 }
+function stopPiano(){ if(pianoTimer) clearInterval(pianoTimer); pianoTimer=null; }
 
-function stopPiano(){
-  if(pianoTimer) clearInterval(pianoTimer);
-  pianoTimer = null;
-}
-
-const rainBtn = document.getElementById("rainBtn");
-const pianoBtn = document.getElementById("pianoBtn");
-
+const rainBtn=document.getElementById("rainBtn");
+const pianoBtn=document.getElementById("pianoBtn");
 rainBtn.addEventListener("click", ()=>{
-  rainOn = !rainOn;
+  rainOn=!rainOn;
   if(rainOn){ startRain(); rainBtn.textContent="rain: on 🌧️"; }
   else{ stopRain(); rainBtn.textContent="rain: off 🌧️"; }
 });
-
 pianoBtn.addEventListener("click", ()=>{
-  pianoOn = !pianoOn;
+  pianoOn=!pianoOn;
   if(pianoOn){ ensureAudio(); startPiano(); pianoBtn.textContent="piano: on 🎹"; }
   else{ stopPiano(); pianoBtn.textContent="piano: off 🎹"; }
 });
 
-/* SPARKLE CURSOR */
+/* SIDE SCROLL LETTERS (YOU WRITE THESE HERE) */
+const LETTERS = {
+  mad:  { title:"Open when mad 😠",  text:"(write your mad letter here)\n\nExample: I love you. I’m sorry. I’m listening. I want to fix it, not fight you. 💗" },
+  sad:  { title:"Open when sad 😔",  text:"(write your sad letter here)\n\nExample: Come here. You don’t have to carry it alone. I’m with you always. 💙" },
+  miss: { title:"Open when you miss me 🥺", text:"(write your miss-me letter here)\n\nExample: I miss you too. Pretend this is a hug. 🥺💗" }
+};
+
+const overlay=document.getElementById("drawerOverlay");
+const drawer=document.getElementById("drawer");
+const dTitle=document.getElementById("drawerTitle");
+const dText=document.getElementById("drawerText");
+const closeBtn=document.getElementById("drawerClose");
+
+function openLetter(key){
+  const L=LETTERS[key];
+  dTitle.textContent=L.title;
+  dText.textContent=L.text;
+  overlay.classList.add("show");
+  drawer.classList.add("show");
+  drawer.setAttribute("aria-hidden","false");
+}
+function closeLetter(){
+  drawer.classList.remove("show");
+  overlay.classList.remove("show");
+  drawer.setAttribute("aria-hidden","true");
+}
+document.querySelectorAll(".sideBtn").forEach(b=>{
+  b.addEventListener("click", ()=>openLetter(b.dataset.letter));
+});
+overlay.addEventListener("click", closeLetter);
+closeBtn.addEventListener("click", closeLetter);
+
+/* Sparkle cursor */
 const c=document.getElementById("sparkles"),ctx=c.getContext("2d");
 let W,H; function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
 addEventListener("resize", resize); resize();
@@ -528,7 +506,7 @@ function addSparkle(x,y){
     p.push({x,y,vx:(Math.random()*2-1)*1.8,vy:(Math.random()*2-1)*1.8,life:1,r:1+Math.random()*2.2});
   }
 }
-addEventListener("mousemove", e=>addSparkle(e.clientX,e.clientY));
+addEventListener("mousemove", e=>addSparkle(e.clientX,e.clientY), {passive:true});
 (function draw(){
   ctx.clearRect(0,0,W,H);
   for(let k=p.length-1;k>=0;k--){
@@ -539,10 +517,10 @@ addEventListener("mousemove", e=>addSparkle(e.clientX,e.clientY));
     ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
     ctx.fillStyle="white"; ctx.fill();
   }
-  ctx.globalAlpha=1;
-  requestAnimationFrame(draw);
+  ctx.globalAlpha=1; requestAnimationFrame(draw);
 })();
 </script>
 </body>
 </html>
+
 
