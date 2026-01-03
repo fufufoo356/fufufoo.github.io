@@ -340,13 +340,6 @@ madBtn.addEventListener("click", ()=>{
   crMeme.style.display=mad?"none":"block";
 });
 
-/* Love meter */
-const loveMeter=document.getElementById("loveMeter");
-const loveLabel=document.getElementById("loveLabel");
-loveMeter.addEventListener("input", ()=>{
-  loveMeter.value=Math.min(100, +loveMeter.value + 5);
-  loveLabel.textContent=(loveMeter.value==100)?"100% obsessed 💘":loveMeter.value+"%";
-});
 
 /* Countdown */
 const cdEl=document.getElementById("countdown");
