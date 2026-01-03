@@ -15,7 +15,7 @@ box-shadow:0 18px 55px rgba(0,0,0,.15);text-align:center;position:relative}
 
 .type{font-size:22px;font-weight:800;color:#c2255c;min-height:64px}
 
-button{border:0;border-radius:14px;padding:10px 14px;font-weight:800;cursor:pointer}
+button, select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;cursor:pointer}
 .openBtn{background:#ff5c8a;color:white;box-shadow:0 10px 25px rgba(255,92,138,.35)}
 .madBtn{background:#adb5bd;color:white;margin-top:10px}
 .madBtn.love{background:#ff5c8a}
@@ -46,6 +46,12 @@ clip-path:polygon(0 0,100% 0,50% 55%);transform-origin:top;transition:.7s}
 .secret.show{display:block}
 
 #crMeme{display:none;width:120px;margin:10px auto;border-radius:12px}
+
+/* Countdown + mood UI */
+#countdownBox{margin-top:14px;padding:12px;border-radius:14px;background:#fff0f6}
+#moodRow{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:12px;flex-wrap:wrap}
+#moodMsg{margin:8px 0 0;color:#555;font-size:14px}
+select{background:#f1f3f5}
 </style>
 </head>
 
@@ -57,6 +63,19 @@ clip-path:polygon(0 0,100% 0,50% 55%);transform-origin:top;transition:.7s}
 
 <div id="type" class="type"></div>
 <p id="timeMsg"></p>
+
+<!-- Mood Switcher -->
+<div id="moodRow">
+  <b>My mood:</b>
+  <select id="moodPick" aria-label="mood picker">
+    <option value="soft">soft 🥺</option>
+    <option value="happy">happy 🥰</option>
+    <option value="mad">mad 😠</option>
+    <option value="chaos">chaos 😈</option>
+    <option value="sleepy">sleepy 😴</option>
+  </select>
+</div>
+<p id="moodMsg"></p>
 
 <button class="openBtn" id="openBtn">Open the envelope 💌</button>
 <span class="hint">open this when you’re mad at me</span>
@@ -79,6 +98,12 @@ clip-path:polygon(0 0,100% 0,50% 55%);transform-origin:top;transition:.7s}
 <p>Love Meter 💕</p>
 <input type="range" id="loveMeter" min="0" max="100" value="0" style="width:100%">
 <p id="loveLabel">0%</p>
+</div>
+
+<!-- Countdown -->
+<div id="countdownBox">
+  <div style="font-weight:800;">Countdown to January 12 🎀</div>
+  <div id="countdown" style="font-size:18px;margin-top:6px;">Loading…</div>
 </div>
 
 <img id="crMeme"
@@ -112,6 +137,40 @@ document.getElementById("timeMsg").textContent=
 (h>=5&&h<12)?"Good morning baby ☀️":
 (h>=18||h<5)?"Goodnight my love 🌙":"Thinking of you 💗";
 
+// MOOD SWITCHER
+const moodPick = document.getElementById("moodPick");
+const moodMsg = document.getElementById("moodMsg");
+function applyMood(m){
+  const card = document.getElementById("card");
+  if(m==="soft"){
+    document.body.style.background="#ffe6f0";
+    card.style.boxShadow="0 18px 55px rgba(0,0,0,.15)";
+    moodMsg.textContent="soft mode: I miss you and I’m being cute 🥺💗";
+  }
+  if(m==="happy"){
+    document.body.style.background="#fff3bf";
+    card.style.boxShadow="0 18px 55px rgba(255,92,138,.25)";
+    moodMsg.textContent="happy mode: okayyy I love you extra today 🥰";
+  }
+  if(m==="mad"){
+    document.body.style.background="#e9ecef";
+    card.style.boxShadow="0 18px 55px rgba(0,0,0,.20)";
+    moodMsg.textContent="mad mode: open the envelope rn 😠💌";
+  }
+  if(m==="chaos"){
+    document.body.style.background="#e5dbff";
+    card.style.boxShadow="0 18px 55px rgba(124,58,237,.25)";
+    moodMsg.textContent="chaos mode: I’m charging 20k again 😈";
+  }
+  if(m==="sleepy"){
+    document.body.style.background="#d0ebff";
+    card.style.boxShadow="0 18px 55px rgba(0,0,0,.12)";
+    moodMsg.textContent="sleepy mode: goodnight baby 😴🌙";
+  }
+}
+applyMood(moodPick.value);
+moodPick.addEventListener("change", e => applyMood(e.target.value));
+
 // ENVELOPE
 openBtn.onclick=()=>{
 envelope.classList.add("show");
@@ -135,6 +194,30 @@ loveMeter.oninput=()=>{
 loveMeter.value=Math.min(100,+loveMeter.value+5);
 loveLabel.textContent=loveMeter.value==100?"100% obsessed 💘":loveMeter.value+"%";
 };
+
+// COUNTDOWN TO JAN 12 (next occurrence)
+const cdEl = document.getElementById("countdown");
+function getNextJan12(){
+  const now = new Date();
+  const year = now.getFullYear();
+  let target = new Date(year, 0, 12, 0, 0, 0);
+  if(now > target) target = new Date(year + 1, 0, 12, 0, 0, 0);
+  return target;
+}
+const target = getNextJan12();
+function tickCountdown(){
+  const now = new Date();
+  let diff = target - now;
+  if(diff <= 0){ cdEl.textContent = "IT’S JANUARY 12 🎉💗"; return; }
+  const total = Math.floor(diff/1000);
+  const d = Math.floor(total/86400);
+  const h = Math.floor((total%86400)/3600);
+  const m = Math.floor((total%3600)/60);
+  const s = total%60;
+  cdEl.textContent = `${d}d ${h}h ${m}m ${s}s`;
+}
+tickCountdown();
+setInterval(tickCountdown, 1000);
 
 // FLOATING HEARTS
 const hearts=["💗","💞","💖","💘","💕","❤️"];
@@ -168,6 +251,7 @@ ctx.globalAlpha=1;requestAnimationFrame(draw);
 </script>
 </body>
 </html>
+
 
 
 
