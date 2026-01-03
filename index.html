@@ -15,7 +15,7 @@ box-shadow:0 18px 55px rgba(0,0,0,.15);text-align:center;position:relative}
 
 .type{font-size:22px;font-weight:800;color:#c2255c;min-height:64px}
 
-button, select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;cursor:pointer}
+button{border:0;border-radius:14px;padding:10px 14px;font-weight:800;cursor:pointer}
 .openBtn{background:#ff5c8a;color:white;box-shadow:0 10px 25px rgba(255,92,138,.35)}
 .madBtn{background:#adb5bd;color:white;margin-top:10px}
 .madBtn.love{background:#ff5c8a}
@@ -24,6 +24,8 @@ button, select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;cur
 @keyframes beat{0%,100%{transform:scale(1)}25%{transform:scale(1.04)}50%{transform:scale(1)}75%{transform:scale(1.04)}}
 
 .hint{display:block;margin-top:6px;opacity:.65}
+#timeMsg{margin:10px 0 0;color:#555}
+#moodDisplay{margin:10px 0 0;font-size:14px;color:#555}
 
 .heart{position:fixed;z-index:40;pointer-events:none;font-size:18px;animation:floatUp linear forwards}
 @keyframes floatUp{from{transform:translate(-50%,0);opacity:0}10%{opacity:1}to{transform:translate(-50%,-110vh);opacity:0}}
@@ -40,14 +42,8 @@ clip-path:polygon(0 0,100% 0,50% 55%);transform-origin:top;transition:.7s}
 .secret{display:none;margin-top:10px;padding:10px;background:#fff0f6;border-radius:12px}
 .secret.show{display:block}
 
-#crMeme{display:none;width:120px;margin:10px auto;border-radius:12px}
-
-/* UI */
 #countdownBox{margin-top:14px;padding:12px;border-radius:14px;background:#fff0f6}
-#moodRow{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:12px;flex-wrap:wrap}
-#moodMsg{margin:8px 0 0;color:#555;font-size:14px}
-select{background:#f1f3f5}
-#timeMsg{margin:10px 0 0;color:#555}
+#crMeme{display:none;width:120px;margin:10px auto;border-radius:12px}
 </style>
 </head>
 
@@ -58,20 +54,7 @@ select{background:#f1f3f5}
   <div class="card" id="card">
     <div id="type" class="type"></div>
     <p id="timeMsg"></p>
-
-    <!-- Mood Switcher -->
-    <div id="moodRow">
-      <b>My mood:</b>
-      <select id="moodPick" aria-label="mood picker">
-        <option value="soft">soft 🥺</option>
-        <option value="happy">happy 🥰</option>
-        <option value="sad">sad 😔</option>
-        <option value="mad">mad 😠</option>
-        <option value="chaos">chaos 😈</option>
-        <option value="sleepy">sleepy 😴</option>
-      </select>
-    </div>
-    <p id="moodMsg"></p>
+    <p id="moodDisplay"></p>
 
     <button class="openBtn" id="openBtn">Open the envelope 💌</button>
     <span class="hint">open this when you’re mad at me</span>
@@ -96,7 +79,6 @@ select{background:#f1f3f5}
       <p id="loveLabel">0%</p>
     </div>
 
-    <!-- Countdown -->
     <div id="countdownBox">
       <div style="font-weight:800;">Countdown to January 12 🎀</div>
       <div id="countdown" style="font-size:18px;margin-top:6px;">Loading…</div>
@@ -109,7 +91,7 @@ select{background:#f1f3f5}
 </div>
 
 <script>
-/* TYPEWRITER (your text preserved) */
+/* ===== your typewriter text preserved ===== */
 const lines=[
   "Eva & Akhil 💞",
   "I love you ❤️",
@@ -126,70 +108,80 @@ const el=document.getElementById("type");
   setTimeout(loop, del?25:45);
 })();
 
-/* TIME MESSAGE */
+/* ===== time message ===== */
 const hour=new Date().getHours();
 document.getElementById("timeMsg").textContent =
   (hour>=5 && hour<12) ? "Good morning baby ☀️" :
   (hour>=18 || hour<5) ? "Goodnight my love 🌙" :
   "Thinking of you 💗";
 
-/* MOOD SWITCHER + SAVE */
-const moodPick=document.getElementById("moodPick");
-const moodMsg=document.getElementById("moodMsg");
-const card=document.getElementById("card");
+/* ===== mood: display + theme + (admin) manual input ===== */
+const moodDisplay = document.getElementById("moodDisplay");
+const card = document.getElementById("card");
 
-function applyMood(m){
-  if(m==="soft"){
-    document.body.style.background="#ffe6f0";
-    card.style.boxShadow="0 18px 55px rgba(0,0,0,.15)";
-    moodMsg.textContent="soft mode: I miss you and I’m being cute 🥺💗";
-  }
-  if(m==="happy"){
-    document.body.style.background="#ffb3d9";           // PINK PAGE
-    card.style.boxShadow="0 18px 55px rgba(255,92,138,.35)";
-    moodMsg.textContent="happy mode: okayyy I love you extra today 🥰💗";
-  }
-  if(m==="sad"){
-    document.body.style.background="#bfe3ff";           // BABY BLUE PAGE
+function applyTheme(key, customText){
+  // default text shown to him
+  const msg = customText || ({
+    soft:"soft mode: I miss you and I’m being cute 🥺💗",
+    happy:"happy mode: okayyy I love you extra today 🥰💗",
+    sad:"sad mode: I miss you, come hug me pls 😔💙",
+    mad:"mad mode: open the envelope rn 😠💌",
+    chaos:"chaos mode: I’m charging 20k again 😈💜❤️",
+    sleepy:"sleepy mode: goodnight baby 😴🌙"
+  }[key] || "mood: thinking of you 💗");
+
+  moodDisplay.textContent = msg;
+
+  // full-page backgrounds you asked for
+  if(key==="sad"){
+    document.body.style.background="#bfe3ff";                 // baby blue
     card.style.boxShadow="0 18px 55px rgba(0,0,0,.10)";
-    moodMsg.textContent="sad mode: I miss you, come hug me pls 😔💙";
-  }
-  if(m==="mad"){
+  } else if(key==="happy"){
+    document.body.style.background="#ffb3d9";                 // pink
+    card.style.boxShadow="0 18px 55px rgba(255,92,138,.35)";
+  } else if(key==="chaos"){
+    document.body.style.background="linear-gradient(135deg,#7c3aed,#ff0000)"; // purple+red
+    card.style.boxShadow="0 18px 55px rgba(124,58,237,.35)";
+  } else if(key==="mad"){
     document.body.style.background="#e9ecef";
     card.style.boxShadow="0 18px 55px rgba(0,0,0,.20)";
-    moodMsg.textContent="mad mode: open the envelope rn 😠💌";
-  }
-  if(m==="chaos"){
-    document.body.style.background="linear-gradient(135deg,#7c3aed,#ff0000)"; // PURPLE + RED
-    card.style.boxShadow="0 18px 55px rgba(124,58,237,.35)";
-    moodMsg.textContent="chaos mode: I’m charging 20k again 😈💜❤️";
-  }
-  if(m==="sleepy"){
+  } else if(key==="sleepy"){
     document.body.style.background="#d0ebff";
     card.style.boxShadow="0 18px 55px rgba(0,0,0,.12)";
-    moodMsg.textContent="sleepy mode: goodnight baby 😴🌙";
+  } else { // soft/unknown
+    document.body.style.background="#ffe6f0";
+    card.style.boxShadow="0 18px 55px rgba(0,0,0,.15)";
   }
 }
 
-const savedMood = localStorage.getItem("evaAkhilMood");
-if(savedMood){
-  moodPick.value = savedMood;
-  applyMood(savedMood);
-} else {
-  applyMood(moodPick.value);
+// Load saved mood for THIS device (works great locally)
+const savedMoodKey = localStorage.getItem("evaMoodKey") || "soft";
+const savedMoodText = localStorage.getItem("evaMoodText") || "";
+applyTheme(savedMoodKey, savedMoodText);
+
+// Admin mode: go to ?eva=1 and type the mood manually
+const params = new URLSearchParams(location.search);
+const isAdmin = params.get("eva") === "1";
+const PASSCODE = "1212"; // change this
+
+if(isAdmin){
+  const attempt = prompt("Eva passcode:");
+  if(attempt === PASSCODE){
+    const key = prompt("Pick a mood key: soft / happy / sad / mad / chaos / sleepy", savedMoodKey) || savedMoodKey;
+    const text = prompt("Type today’s mood message (this will show on the site):", savedMoodText) || savedMoodText;
+
+    localStorage.setItem("evaMoodKey", key);
+    localStorage.setItem("evaMoodText", text);
+
+    applyTheme(key, text);
+
+    alert("Saved ✅ Now open the normal link to preview what he’ll see.");
+  } else {
+    alert("nope 😭");
+  }
 }
 
-moodPick.addEventListener("change", e=>{
-  const m=e.target.value;
-  localStorage.setItem("evaAkhilMood", m);
-  applyMood(m);
-});
-
-/* ENVELOPE + SECRET */
-const openBtn=document.getElementById("openBtn");
-const envelope=document.getElementById("envelope");
-const secret=document.getElementById("secret");
-
+/* ===== envelope ===== */
 openBtn.onclick=()=>{
   envelope.classList.add("show");
   setTimeout(()=>envelope.classList.toggle("open"),50);
@@ -197,40 +189,33 @@ openBtn.onclick=()=>{
   burst(innerWidth/2,innerHeight/2,18);
 };
 
-/* STILL MAD BUTTON */
-const madBtn=document.getElementById("madBtn");
-const crMeme=document.getElementById("crMeme");
+/* ===== still mad button ===== */
 let mad=true;
-
 madBtn.onclick=()=>{
   mad=!mad;
-  madBtn.textContent = mad ? "still mad? 😠" : "ok fine I love you ❤️";
-  madBtn.classList.toggle("love", !mad);
-  card.classList.toggle("heartbeat", !mad);
-  crMeme.style.display = mad ? "none" : "block";
+  madBtn.textContent=mad?"still mad? 😠":"ok fine I love you ❤️";
+  madBtn.classList.toggle("love",!mad);
+  card.classList.toggle("heartbeat",!mad);
+  crMeme.style.display=mad?"none":"block";
 };
 
-/* LOVE METER */
-const loveMeter=document.getElementById("loveMeter");
-const loveLabel=document.getElementById("loveLabel");
+/* ===== love meter ===== */
 loveMeter.oninput=()=>{
-  loveMeter.value=Math.min(100, +loveMeter.value + 5);
-  loveLabel.textContent = loveMeter.value==100 ? "100% obsessed 💘" : loveMeter.value + "%";
+  loveMeter.value=Math.min(100,+loveMeter.value+5);
+  loveLabel.textContent=loveMeter.value==100?"100% obsessed 💘":loveMeter.value+"%";
 };
 
-/* COUNTDOWN TO JAN 12 (next occurrence) */
+/* ===== countdown to Jan 12 ===== */
 const cdEl=document.getElementById("countdown");
 function getNextJan12(){
-  const now=new Date();
-  const y=now.getFullYear();
+  const now=new Date(), y=now.getFullYear();
   let t=new Date(y,0,12,0,0,0);
   if(now>t) t=new Date(y+1,0,12,0,0,0);
   return t;
 }
 const target=getNextJan12();
 function tickCountdown(){
-  const now=new Date();
-  let diff=target-now;
+  const now=new Date(), diff=target-now;
   if(diff<=0){ cdEl.textContent="IT’S JANUARY 12 🎉💗"; return; }
   const total=Math.floor(diff/1000);
   const d=Math.floor(total/86400);
@@ -239,46 +224,36 @@ function tickCountdown(){
   const s=total%60;
   cdEl.textContent=`${d}d ${h}h ${m}m ${s}s`;
 }
-tickCountdown();
-setInterval(tickCountdown,1000);
+tickCountdown(); setInterval(tickCountdown,1000);
 
-/* FLOATING HEARTS */
+/* ===== floating hearts ===== */
 const hearts=["💗","💞","💖","💘","💕","❤️"];
 function spawn(x,y){
   const h=document.createElement("div");
   h.className="heart";
   h.textContent=hearts[Math.random()*hearts.length|0];
-  h.style.left=x+"px";
-  h.style.top=y+"px";
+  h.style.left=x+"px";h.style.top=y+"px";
   h.style.animationDuration=(3+Math.random()*3)+"s";
   document.body.appendChild(h);
   setTimeout(()=>h.remove(),6000);
 }
 function burst(x,y,n){for(let k=0;k<n;k++)spawn(x+Math.random()*120-60,y)}
-setInterval(()=>spawn(Math.random()*innerWidth, innerHeight+20),700);
+setInterval(()=>spawn(Math.random()*innerWidth,innerHeight+20),700);
 onclick=e=>burst(e.clientX,e.clientY,10);
 
-/* SPARKLES */
+/* ===== sparkles ===== */
 const c=document.getElementById("sparkles"),ctx=c.getContext("2d");
-let W,H;
-onresize=()=>{W=c.width=innerWidth;H=c.height=innerHeight};
-onresize();
+let W,H;onresize=()=>{W=c.width=innerWidth;H=c.height=innerHeight};onresize();
 const p=[];
 onmousemove=e=>{for(let k=0;k<3;k++)p.push({x:e.clientX,y:e.clientY,vx:Math.random()*2-1,vy:Math.random()*2-1,l:1})};
 (function draw(){
   ctx.clearRect(0,0,W,H);
   for(let k=p.length-1;k>=0;k--){
-    const s=p[k];
-    s.x+=s.vx; s.y+=s.vy; s.l-=.03;
+    const s=p[k]; s.x+=s.vx; s.y+=s.vy; s.l-=.03;
     if(s.l<=0){p.splice(k,1); continue;}
-    ctx.globalAlpha=s.l;
-    ctx.beginPath();
-    ctx.arc(s.x,s.y,2,0,6.28);
-    ctx.fillStyle="white";
-    ctx.fill();
+    ctx.globalAlpha=s.l; ctx.beginPath(); ctx.arc(s.x,s.y,2,0,6.28); ctx.fillStyle="white"; ctx.fill();
   }
-  ctx.globalAlpha=1;
-  requestAnimationFrame(draw);
+  ctx.globalAlpha=1; requestAnimationFrame(draw);
 })();
 </script>
 </body>
