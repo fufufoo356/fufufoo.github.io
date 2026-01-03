@@ -6,36 +6,69 @@
 <title>Eva & Akhil ❤️</title>
 
 <style>
-body{margin:0;min-height:100vh;background:#ffe6f0;font-family:Arial,sans-serif;overflow:hidden}
+/* Slow fade-in */
+html,body{height:100%}
+body{
+  margin:0;min-height:100vh;background:#ffe6f0;font-family:Arial,sans-serif;overflow:hidden;
+  opacity:0; transition:opacity 1.2s ease;
+}
+body.loaded{opacity:1}
+
 #sparkles{position:fixed;inset:0;pointer-events:none;z-index:50}
-
 .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-.card{background:white;width:min(520px,92vw);padding:28px;border-radius:22px;
-box-shadow:0 18px 55px rgba(0,0,0,.15);text-align:center;position:relative}
+.card{
+  background:white;width:min(560px,92vw);padding:26px;border-radius:22px;
+  box-shadow:0 18px 55px rgba(0,0,0,.15);text-align:center;position:relative;z-index:2
+}
+.type{font-size:22px;font-weight:800;color:#c2255c;min-height:64px;margin:0 0 10px}
 
-.type{font-size:22px;font-weight:800;color:#c2255c;min-height:64px}
-
-button{border:0;border-radius:14px;padding:10px 14px;font-weight:800;cursor:pointer}
+button, select{
+  border:0;border-radius:14px;padding:10px 14px;font-weight:800;cursor:pointer
+}
 .openBtn{background:#ff5c8a;color:white;box-shadow:0 10px 25px rgba(255,92,138,.35)}
 .madBtn{background:#adb5bd;color:white;margin-top:10px}
 .madBtn.love{background:#ff5c8a}
+.smallBtn{background:#fff0f6}
+.smallBtn:active{transform:translateY(1px)}
 
 .heartbeat{animation:beat 1.2s infinite}
 @keyframes beat{0%,100%{transform:scale(1)}25%{transform:scale(1.04)}50%{transform:scale(1)}75%{transform:scale(1.04)}}
 
 .hint{display:block;margin-top:6px;opacity:.65}
-#timeMsg{margin:10px 0 0;color:#555}
-#moodDisplay{margin:10px 0 0;font-size:14px;color:#555}
+#timeMsg{margin:6px 0 0;color:#555}
+#dailyQuote{margin:10px 0 0;color:#555;background:#fff0f6;border-radius:14px;padding:10px}
+#dailyQuote b{color:#c2255c}
 
-.heart{position:fixed;z-index:40;pointer-events:none;font-size:18px;animation:floatUp linear forwards}
-@keyframes floatUp{from{transform:translate(-50%,0);opacity:0}10%{opacity:1}to{transform:translate(-50%,-110vh);opacity:0}}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;align-items:center;margin-top:12px}
+
+.heart{
+  position:fixed;z-index:40;pointer-events:none;font-size:18px;
+  filter:drop-shadow(0 6px 10px rgba(0,0,0,.12));
+  animation:floatUp linear forwards
+}
+@keyframes floatUp{
+  from{transform:translate(-50%,0);opacity:0}
+  10%{opacity:1}
+  to{transform:translate(-50%,-110vh);opacity:0}
+}
 
 .envelope{display:none;margin:16px auto 0;width:320px;height:210px;position:relative}
 .envelope.show{display:block}
-.paper{position:absolute;left:50%;bottom:12px;transform:translateX(-50%) translateY(80px);
-width:86%;background:white;border-radius:14px;padding:16px;transition:.7s}
-.flap{position:absolute;inset:0;background:linear-gradient(135deg,#ff85a2,#ff4d6d);
-clip-path:polygon(0 0,100% 0,50% 55%);transform-origin:top;transition:.7s}
+.paper{
+  position:absolute;left:50%;bottom:12px;transform:translateX(-50%) translateY(80px);
+  width:86%;background:white;border-radius:14px;padding:16px;transition:.7s;
+  box-shadow:0 12px 30px rgba(0,0,0,.18)
+}
+.flap{
+  position:absolute;inset:0;background:linear-gradient(135deg,#ff85a2,#ff4d6d);
+  clip-path:polygon(0 0,100% 0,50% 55%);transform-origin:top;transition:.7s;
+  border-radius:18px;box-shadow:inset 0 -10px 30px rgba(255,255,255,.25)
+}
+.envelope::before{
+  content:"";position:absolute;inset:0;border-radius:18px;
+  background:linear-gradient(135deg,#ffd1dc,#ffb3c6);
+  clip-path:polygon(0 0,100% 0,100% 100%,50% 70%,0 100%);
+}
 .envelope.open .flap{transform:rotateX(180deg)}
 .envelope.open .paper{transform:translateX(-50%) translateY(-6px)}
 
@@ -44,6 +77,52 @@ clip-path:polygon(0 0,100% 0,50% 55%);transform-origin:top;transition:.7s}
 
 #countdownBox{margin-top:14px;padding:12px;border-radius:14px;background:#fff0f6}
 #crMeme{display:none;width:120px;margin:10px auto;border-radius:12px}
+
+/* Read-when letters */
+.letters{margin-top:14px;text-align:left}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:10px}
+.tabBtn{background:#f1f3f5}
+.tabBtn.active{background:#ff5c8a;color:white}
+.letterBox{
+  background:#fff0f6;border-radius:16px;padding:12px;
+  box-shadow:0 10px 25px rgba(0,0,0,.06)
+}
+.letterTitle{font-weight:900;color:#c2255c;margin:0 0 6px}
+.letterText{margin:0;color:#444;line-height:1.35}
+
+/* Shiny promise list */
+.shineBox{
+  margin-top:14px;text-align:left;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#fff0f6,#ffe6f0);
+  border-radius:16px;padding:12px;
+  box-shadow:0 10px 25px rgba(0,0,0,.06)
+}
+.shineBox::after{
+  content:""; position:absolute; top:-40%; left:-60%;
+  width:60%; height:180%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent);
+  transform:rotate(20deg);
+  animation:shine 2.8s infinite;
+}
+@keyframes shine{
+  0%{left:-80%}
+  100%{left:140%}
+}
+.shineBox h3{margin:0 0 8px;color:#c2255c}
+.shineBox ul{margin:0;padding-left:18px;color:#444}
+.small{font-size:13px;color:#666;margin-top:6px}
+
+/* Timeline */
+.timeline{margin-top:14px;text-align:left;background:#fff0f6;border-radius:16px;padding:12px}
+.timeline h3{margin:0 0 8px;color:#c2255c}
+.tItem{display:flex;gap:10px;align-items:flex-start;margin:8px 0}
+.dot{width:10px;height:10px;border-radius:50%;background:#ff5c8a;margin-top:5px;flex:0 0 auto}
+.tText{color:#444}
+
+/* Sound + stats */
+.pill{
+  display:inline-block;background:#fff0f6;border-radius:999px;padding:8px 12px;font-weight:800;color:#c2255c
+}
 </style>
 </head>
 
@@ -52,18 +131,32 @@ clip-path:polygon(0 0,100% 0,50% 55%);transform-origin:top;transition:.7s}
 
 <div class="wrap">
   <div class="card" id="card">
+
     <div id="type" class="type"></div>
     <p id="timeMsg"></p>
-    <p id="moodDisplay"></p>
 
-    <button class="openBtn" id="openBtn">Open the envelope 💌</button>
+    <div id="dailyQuote">
+      <b>Daily love quote 💗</b>
+      <div id="quoteText" style="margin-top:6px;"></div>
+    </div>
+
+    <div class="row" style="margin-top:12px;">
+      <span class="pill">Hearts: <span id="heartCount">0</span> 💞</span>
+      <button id="apologyBtn" class="smallBtn">apology generator 🥺</button>
+      <button id="rainBtn" class="smallBtn">rain: off 🌧️</button>
+      <button id="pianoBtn" class="smallBtn">piano: off 🎹</button>
+    </div>
+
+    <div id="apologyOut" style="margin-top:10px;color:#444;background:#f8f9fa;border-radius:14px;padding:10px;display:none;"></div>
+
+    <button class="openBtn" id="openBtn" style="margin-top:14px;">Open the envelope 💌</button>
     <span class="hint">open this when you’re mad at me</span>
 
     <div class="envelope" id="envelope">
       <div class="flap"></div>
       <div class="paper">
         <b>Eva & Akhil 💕</b>
-        <p>I made this for you because I love you.</p>
+        <p style="margin:8px 0 0;">I made this for you because I love you.</p>
       </div>
     </div>
 
@@ -74,14 +167,51 @@ clip-path:polygon(0 0,100% 0,50% 55%);transform-origin:top;transition:.7s}
     <button class="madBtn" id="madBtn">still mad? 😠</button>
 
     <div style="margin-top:14px">
-      <p>Love Meter 💕</p>
+      <p style="margin:0 0 6px;font-weight:900;color:#c2255c;">Love Meter 💕</p>
       <input type="range" id="loveMeter" min="0" max="100" value="0" style="width:100%">
-      <p id="loveLabel">0%</p>
+      <p id="loveLabel" style="margin:6px 0 0;">0%</p>
     </div>
 
     <div id="countdownBox">
-      <div style="font-weight:800;">Countdown to January 12 🎀</div>
+      <div style="font-weight:900;color:#c2255c;">Countdown to January 12 🎀</div>
       <div id="countdown" style="font-size:18px;margin-top:6px;">Loading…</div>
+    </div>
+
+    <!-- Read-when letters -->
+    <div class="letters">
+      <div class="tabs">
+        <button class="tabBtn active" data-tab="mad">Read when you’re mad 😠</button>
+        <button class="tabBtn" data-tab="sad">Read when you’re sad 😔</button>
+        <button class="tabBtn" data-tab="miss">Read when you miss me 🥺</button>
+        <button class="tabBtn" data-tab="sleep">Read when you can’t sleep 🌙</button>
+      </div>
+
+      <div class="letterBox" id="letterBox">
+        <p class="letterTitle" id="letterTitle">Read when you’re mad 😠</p>
+        <p class="letterText" id="letterText">
+          I know you’re upset. Take a breath. I love you. I’m here and I’m not going anywhere. 💗
+        </p>
+      </div>
+      <div class="small">Switch the tabs whenever you want.</div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline">
+      <h3>Timeline of us 💞</h3>
+      <div class="tItem"><div class="dot"></div><div class="tText"><b>End of August:</b> we met 🥺</div></div>
+      <div class="tItem"><div class="dot"></div><div class="tText"><b>Halloween:</b> we started dating 🎃💕</div></div>
+    </div>
+
+    <!-- Promise list -->
+    <div class="shineBox">
+      <h3>Promise list ✨</h3>
+      <ul>
+        <li>[ ]</li>
+        <li>[ ]</li>
+        <li>[ ]</li>
+        <li><b>I promise to always be there for you no matter what.</b></li>
+      </ul>
+      <div class="small">Add more whenever you want.</div>
     </div>
 
     <img id="crMeme"
@@ -91,7 +221,10 @@ clip-path:polygon(0 0,100% 0,50% 55%);transform-origin:top;transition:.7s}
 </div>
 
 <script>
-/* ===== your typewriter text preserved ===== */
+/* Fade in */
+addEventListener("load", ()=> document.body.classList.add("loaded"));
+
+/* TYPEWRITER (your text preserved) */
 const lines=[
   "Eva & Akhil 💞",
   "I love you ❤️",
@@ -108,114 +241,89 @@ const el=document.getElementById("type");
   setTimeout(loop, del?25:45);
 })();
 
-/* ===== time message ===== */
+/* TIME MESSAGE */
 const hour=new Date().getHours();
 document.getElementById("timeMsg").textContent =
   (hour>=5 && hour<12) ? "Good morning baby ☀️" :
   (hour>=18 || hour<5) ? "Goodnight my love 🌙" :
   "Thinking of you 💗";
 
-/* ===== mood: display + theme + (admin) manual input ===== */
-const moodDisplay = document.getElementById("moodDisplay");
-const card = document.getElementById("card");
+/* DAILY LOVE QUOTE (changes daily, stable per day) */
+const quotes = [
+  "If I could keep you in my pocket I would. (but like respectfully) 💗",
+  "You are my favorite notification.",
+  "I’m proud of you. Always.",
+  "Even when we’re annoyed… I still choose you.",
+  "I love you more than I love being right. (sometimes) 😭",
+  "You’re my safe place.",
+  "I hope today is gentle to you.",
+  "I’m on your team. Always.",
+  "I love you in every mood.",
+  "You + me = home."
+];
 
-function applyTheme(key, customText){
-  // default text shown to him
-  const msg = customText || ({
-    soft:"soft mode: I miss you and I’m being cute 🥺💗",
-    happy:"happy mode: okayyy I love you extra today 🥰💗",
-    sad:"sad mode: I miss you, come hug me pls 😔💙",
-    mad:"mad mode: open the envelope rn 😠💌",
-    chaos:"chaos mode: I’m charging 20k again 😈💜❤️",
-    sleepy:"sleepy mode: goodnight baby 😴🌙"
-  }[key] || "mood: thinking of you 💗");
-
-  moodDisplay.textContent = msg;
-
-  // full-page backgrounds you asked for
-  if(key==="sad"){
-    document.body.style.background="#bfe3ff";                 // baby blue
-    card.style.boxShadow="0 18px 55px rgba(0,0,0,.10)";
-  } else if(key==="happy"){
-    document.body.style.background="#ffb3d9";                 // pink
-    card.style.boxShadow="0 18px 55px rgba(255,92,138,.35)";
-  } else if(key==="chaos"){
-    document.body.style.background="linear-gradient(135deg,#7c3aed,#ff0000)"; // purple+red
-    card.style.boxShadow="0 18px 55px rgba(124,58,237,.35)";
-  } else if(key==="mad"){
-    document.body.style.background="#e9ecef";
-    card.style.boxShadow="0 18px 55px rgba(0,0,0,.20)";
-  } else if(key==="sleepy"){
-    document.body.style.background="#d0ebff";
-    card.style.boxShadow="0 18px 55px rgba(0,0,0,.12)";
-  } else { // soft/unknown
-    document.body.style.background="#ffe6f0";
-    card.style.boxShadow="0 18px 55px rgba(0,0,0,.15)";
-  }
+function dayKey(d=new Date()){
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 }
+const todayKey = dayKey();
+let savedQuoteKey = localStorage.getItem("evaQuoteDay");
+let savedQuote = localStorage.getItem("evaQuoteText");
 
-// Load saved mood for THIS device (works great locally)
-const savedMoodKey = localStorage.getItem("evaMoodKey") || "soft";
-const savedMoodText = localStorage.getItem("evaMoodText") || "";
-applyTheme(savedMoodKey, savedMoodText);
-
-// Admin mode: go to ?eva=1 and type the mood manually
-const params = new URLSearchParams(location.search);
-const isAdmin = params.get("eva") === "1";
-const PASSCODE = "1212"; // change this
-
-if(isAdmin){
-  const attempt = prompt("Eva passcode:");
-  if(attempt === PASSCODE){
-    const key = prompt("Pick a mood key: soft / happy / sad / mad / chaos / sleepy", savedMoodKey) || savedMoodKey;
-    const text = prompt("Type today’s mood message (this will show on the site):", savedMoodText) || savedMoodText;
-
-    localStorage.setItem("evaMoodKey", key);
-    localStorage.setItem("evaMoodText", text);
-
-    applyTheme(key, text);
-
-    alert("Saved ✅ Now open the normal link to preview what he’ll see.");
-  } else {
-    alert("nope 😭");
-  }
+if(savedQuoteKey !== todayKey || !savedQuote){
+  // deterministic-ish pick
+  const seed = (new Date().getFullYear()*10000) + ((new Date().getMonth()+1)*100) + new Date().getDate();
+  const idx = seed % quotes.length;
+  savedQuote = quotes[idx];
+  localStorage.setItem("evaQuoteDay", todayKey);
+  localStorage.setItem("evaQuoteText", savedQuote);
 }
+document.getElementById("quoteText").textContent = savedQuote;
 
-/* ===== envelope ===== */
-openBtn.onclick=()=>{
+/* Envelope + secret */
+const openBtn=document.getElementById("openBtn");
+const envelope=document.getElementById("envelope");
+const secret=document.getElementById("secret");
+openBtn.addEventListener("click", ()=>{
   envelope.classList.add("show");
   setTimeout(()=>envelope.classList.toggle("open"),50);
-  setTimeout(()=>secret.classList.toggle("show"),600);
-  burst(innerWidth/2,innerHeight/2,18);
-};
+  setTimeout(()=>secret.classList.toggle("show"),650);
+  burstHearts(innerWidth/2, innerHeight/2, 18);
+});
 
-/* ===== still mad button ===== */
+/* STILL MAD BUTTON + meme + heartbeat */
+const madBtn=document.getElementById("madBtn");
+const crMeme=document.getElementById("crMeme");
+const card=document.getElementById("card");
 let mad=true;
-madBtn.onclick=()=>{
+madBtn.addEventListener("click", ()=>{
   mad=!mad;
   madBtn.textContent=mad?"still mad? 😠":"ok fine I love you ❤️";
   madBtn.classList.toggle("love",!mad);
   card.classList.toggle("heartbeat",!mad);
-  crMeme.style.display=mad?"none":"block";
-};
+  crMeme.style.display = mad ? "none" : "block";
+});
 
-/* ===== love meter ===== */
-loveMeter.oninput=()=>{
-  loveMeter.value=Math.min(100,+loveMeter.value+5);
-  loveLabel.textContent=loveMeter.value==100?"100% obsessed 💘":loveMeter.value+"%";
-};
+/* LOVE METER */
+const loveMeter=document.getElementById("loveMeter");
+const loveLabel=document.getElementById("loveLabel");
+loveMeter.addEventListener("input", ()=>{
+  loveMeter.value=Math.min(100, +loveMeter.value + 5);
+  loveLabel.textContent = (loveMeter.value==100) ? "100% obsessed 💘" : loveMeter.value + "%";
+});
 
-/* ===== countdown to Jan 12 ===== */
+/* COUNTDOWN TO JAN 12 (next occurrence) */
 const cdEl=document.getElementById("countdown");
 function getNextJan12(){
-  const now=new Date(), y=now.getFullYear();
+  const now=new Date();
+  const y=now.getFullYear();
   let t=new Date(y,0,12,0,0,0);
   if(now>t) t=new Date(y+1,0,12,0,0,0);
   return t;
 }
 const target=getNextJan12();
 function tickCountdown(){
-  const now=new Date(), diff=target-now;
+  const now=new Date();
+  let diff=target-now;
   if(diff<=0){ cdEl.textContent="IT’S JANUARY 12 🎉💗"; return; }
   const total=Math.floor(diff/1000);
   const d=Math.floor(total/86400);
@@ -224,40 +332,215 @@ function tickCountdown(){
   const s=total%60;
   cdEl.textContent=`${d}d ${h}h ${m}m ${s}s`;
 }
-tickCountdown(); setInterval(tickCountdown,1000);
+tickCountdown();
+setInterval(tickCountdown,1000);
 
-/* ===== floating hearts ===== */
-const hearts=["💗","💞","💖","💘","💕","❤️"];
-function spawn(x,y){
+/* HEART COUNTER (counts bursts + auto hearts) */
+const heartCountEl = document.getElementById("heartCount");
+let heartCount = Number(localStorage.getItem("evaHeartCount") || "0");
+function addHearts(n){
+  heartCount += n;
+  localStorage.setItem("evaHeartCount", String(heartCount));
+  heartCountEl.textContent = String(heartCount);
+}
+heartCountEl.textContent = String(heartCount);
+
+/* FLOATING HEARTS */
+const heartEmojis=["💗","💞","💖","💘","💕","❤️"];
+function spawnHeart(x,y){
   const h=document.createElement("div");
   h.className="heart";
-  h.textContent=hearts[Math.random()*hearts.length|0];
-  h.style.left=x+"px";h.style.top=y+"px";
+  h.textContent=heartEmojis[(Math.random()*heartEmojis.length)|0];
+  h.style.left=x+"px";
+  h.style.top=y+"px";
+  h.style.fontSize=(14+Math.random()*18)+"px";
   h.style.animationDuration=(3+Math.random()*3)+"s";
   document.body.appendChild(h);
   setTimeout(()=>h.remove(),6000);
 }
-function burst(x,y,n){for(let k=0;k<n;k++)spawn(x+Math.random()*120-60,y)}
-setInterval(()=>spawn(Math.random()*innerWidth,innerHeight+20),700);
-onclick=e=>burst(e.clientX,e.clientY,10);
+function burstHearts(x,y,n){
+  for(let k=0;k<n;k++){
+    spawnHeart(x+(Math.random()*180-90), y+(Math.random()*80-40));
+  }
+  addHearts(n);
+}
+setInterval(()=>{ spawnHeart(Math.random()*innerWidth, innerHeight+20); addHearts(1); }, 850);
+addEventListener("click", e=>burstHearts(e.clientX,e.clientY,10));
 
-/* ===== sparkles ===== */
+/* READ-WHEN LETTERS (tabs) */
+const letters = {
+  mad: {
+    title: "Read when you’re mad 😠",
+    text: "I know you’re upset. Take a breath. I love you. I’m here and I’m not going anywhere. 💗"
+  },
+  sad: {
+    title: "Read when you’re sad 😔",
+    text: "Come here. I love you so much. You don’t have to carry it alone. I’m with you, always. 😔💙"
+  },
+  miss: {
+    title: "Read when you miss me 🥺",
+    text: "I miss you too. I’m thinking about you right now. Pretend this is a hug from me to you. 🥺💗"
+  },
+  sleep: {
+    title: "Read when you can’t sleep 🌙",
+    text: "Close your eyes. Breathe slowly. You are safe and loved. I’m proud of you. Goodnight baby 🌙"
+  }
+};
+const tabBtns = document.querySelectorAll(".tabBtn");
+const letterTitle = document.getElementById("letterTitle");
+const letterText = document.getElementById("letterText");
+
+function setLetter(key){
+  tabBtns.forEach(b=>b.classList.toggle("active", b.dataset.tab===key));
+  letterTitle.textContent = letters[key].title;
+  letterText.textContent = letters[key].text;
+}
+tabBtns.forEach(btn=>btn.addEventListener("click", ()=>setLetter(btn.dataset.tab)));
+setLetter("mad");
+
+/* APOLOGY GENERATOR */
+const apologyBtn = document.getElementById("apologyBtn");
+const apologyOut = document.getElementById("apologyOut");
+const apologies = [
+  "im sorry my love i never mean to hurt you or make you feel sad.",
+  "im sorry baby. i love you and i’m listening. come here 🥺",
+  "im sorry my love. you matter to me more than my ego. 💗",
+  "im sorry. i want to fix it, not fight you. i love you."
+];
+apologyBtn.addEventListener("click", ()=>{
+  const pick = apologies[(Math.random()*apologies.length)|0];
+  apologyOut.style.display="block";
+  apologyOut.textContent = pick;
+});
+
+/* CALM RAIN + PIANO (generated in-browser, no audio files needed) */
+let audioCtx = null;
+let rainOn = false, pianoOn = false;
+let rainNode = null, rainGain = null;
+let pianoTimer = null;
+
+function ensureAudio(){
+  if(!audioCtx){
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+}
+
+function startRain(){
+  ensureAudio();
+  const bufferSize = 2 * audioCtx.sampleRate;
+  const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const output = noiseBuffer.getChannelData(0);
+  for(let i=0;i<bufferSize;i++) output[i] = Math.random()*2-1;
+
+  const white = audioCtx.createBufferSource();
+  white.buffer = noiseBuffer;
+  white.loop = true;
+
+  // filter for softer rain
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = "lowpass";
+  filter.frequency.value = 900;
+
+  rainGain = audioCtx.createGain();
+  rainGain.gain.value = 0.0;
+
+  white.connect(filter);
+  filter.connect(rainGain);
+  rainGain.connect(audioCtx.destination);
+
+  white.start();
+  rainNode = white;
+
+  // fade in
+  rainGain.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 0.6);
+}
+
+function stopRain(){
+  if(rainGain){
+    rainGain.gain.linearRampToValueAtTime(0.0, audioCtx.currentTime + 0.4);
+  }
+  setTimeout(()=>{
+    try{ if(rainNode) rainNode.stop(); }catch(e){}
+    rainNode=null; rainGain=null;
+  }, 500);
+}
+
+function playPianoNote(freq, when, dur){
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = "triangle";
+  osc.frequency.value = freq;
+
+  // envelope
+  gain.gain.setValueAtTime(0.0001, when);
+  gain.gain.exponentialRampToValueAtTime(0.08, when + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.0001, when + dur);
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start(when);
+  osc.stop(when + dur + 0.02);
+}
+
+function startPiano(){
+  ensureAudio();
+  const scale = [261.63, 293.66, 329.63, 392.00, 440.00]; // C D E G A
+  let step = 0;
+  pianoTimer = setInterval(()=>{
+    const now = audioCtx.currentTime;
+    const f1 = scale[step % scale.length];
+    const f2 = scale[(step+2) % scale.length] / 2;
+    playPianoNote(f1, now, 0.6);
+    playPianoNote(f2, now, 0.8);
+    step++;
+  }, 900);
+}
+
+function stopPiano(){
+  if(pianoTimer) clearInterval(pianoTimer);
+  pianoTimer = null;
+}
+
+const rainBtn = document.getElementById("rainBtn");
+const pianoBtn = document.getElementById("pianoBtn");
+
+rainBtn.addEventListener("click", ()=>{
+  rainOn = !rainOn;
+  if(rainOn){ startRain(); rainBtn.textContent="rain: on 🌧️"; }
+  else{ stopRain(); rainBtn.textContent="rain: off 🌧️"; }
+});
+
+pianoBtn.addEventListener("click", ()=>{
+  pianoOn = !pianoOn;
+  if(pianoOn){ ensureAudio(); startPiano(); pianoBtn.textContent="piano: on 🎹"; }
+  else{ stopPiano(); pianoBtn.textContent="piano: off 🎹"; }
+});
+
+/* SPARKLE CURSOR */
 const c=document.getElementById("sparkles"),ctx=c.getContext("2d");
-let W,H;onresize=()=>{W=c.width=innerWidth;H=c.height=innerHeight};onresize();
+let W,H; function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
+addEventListener("resize", resize); resize();
 const p=[];
-onmousemove=e=>{for(let k=0;k<3;k++)p.push({x:e.clientX,y:e.clientY,vx:Math.random()*2-1,vy:Math.random()*2-1,l:1})};
+function addSparkle(x,y){
+  for(let k=0;k<3;k++){
+    p.push({x,y,vx:(Math.random()*2-1)*1.8,vy:(Math.random()*2-1)*1.8,life:1,r:1+Math.random()*2.2});
+  }
+}
+addEventListener("mousemove", e=>addSparkle(e.clientX,e.clientY));
 (function draw(){
   ctx.clearRect(0,0,W,H);
   for(let k=p.length-1;k>=0;k--){
-    const s=p[k]; s.x+=s.vx; s.y+=s.vy; s.l-=.03;
-    if(s.l<=0){p.splice(k,1); continue;}
-    ctx.globalAlpha=s.l; ctx.beginPath(); ctx.arc(s.x,s.y,2,0,6.28); ctx.fillStyle="white"; ctx.fill();
+    const s=p[k];
+    s.x+=s.vx; s.y+=s.vy; s.vy+=0.03; s.life-=0.03;
+    if(s.life<=0){p.splice(k,1); continue;}
+    ctx.globalAlpha=Math.max(s.life,0);
+    ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle="white"; ctx.fill();
   }
-  ctx.globalAlpha=1; requestAnimationFrame(draw);
+  ctx.globalAlpha=1;
+  requestAnimationFrame(draw);
 })();
 </script>
 </body>
 </html>
-
-
 
