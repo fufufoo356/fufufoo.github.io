@@ -25,13 +25,8 @@ button, select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;cur
 
 .hint{display:block;margin-top:6px;opacity:.65}
 
-.heart{position:fixed;z-index:40;pointer-events:none;font-size:18px;
-animation:floatUp linear forwards}
-@keyframes floatUp{
-from{transform:translate(-50%,0);opacity:0}
-10%{opacity:1}
-to{transform:translate(-50%,-110vh);opacity:0}
-}
+.heart{position:fixed;z-index:40;pointer-events:none;font-size:18px;animation:floatUp linear forwards}
+@keyframes floatUp{from{transform:translate(-50%,0);opacity:0}10%{opacity:1}to{transform:translate(-50%,-110vh);opacity:0}}
 
 .envelope{display:none;margin:16px auto 0;width:320px;height:210px;position:relative}
 .envelope.show{display:block}
@@ -47,11 +42,12 @@ clip-path:polygon(0 0,100% 0,50% 55%);transform-origin:top;transition:.7s}
 
 #crMeme{display:none;width:120px;margin:10px auto;border-radius:12px}
 
-/* Countdown + mood UI */
+/* UI */
 #countdownBox{margin-top:14px;padding:12px;border-radius:14px;background:#fff0f6}
 #moodRow{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:12px;flex-wrap:wrap}
 #moodMsg{margin:8px 0 0;color:#555;font-size:14px}
 select{background:#f1f3f5}
+#timeMsg{margin:10px 0 0;color:#555}
 </style>
 </head>
 
@@ -59,99 +55,104 @@ select{background:#f1f3f5}
 <canvas id="sparkles"></canvas>
 
 <div class="wrap">
-<div class="card" id="card">
+  <div class="card" id="card">
+    <div id="type" class="type"></div>
+    <p id="timeMsg"></p>
 
-<div id="type" class="type"></div>
-<p id="timeMsg"></p>
+    <!-- Mood Switcher -->
+    <div id="moodRow">
+      <b>My mood:</b>
+      <select id="moodPick" aria-label="mood picker">
+        <option value="soft">soft 🥺</option>
+        <option value="happy">happy 🥰</option>
+        <option value="sad">sad 😔</option>
+        <option value="mad">mad 😠</option>
+        <option value="chaos">chaos 😈</option>
+        <option value="sleepy">sleepy 😴</option>
+      </select>
+    </div>
+    <p id="moodMsg"></p>
 
-<!-- Mood Switcher -->
-<div id="moodRow">
-  <b>My mood:</b>
-  <select id="moodPick" aria-label="mood picker">
-    <option value="soft">soft 🥺</option>
-    <option value="happy">happy 🥰</option>
-    <option value="mad">mad 😠</option>
-    <option value="chaos">chaos 😈</option>
-    <option value="sleepy">sleepy 😴</option>
-    <option value="sad">sad 😔</option>
-  </select>
-</div>
-<p id="moodMsg"></p>
+    <button class="openBtn" id="openBtn">Open the envelope 💌</button>
+    <span class="hint">open this when you’re mad at me</span>
 
-<button class="openBtn" id="openBtn">Open the envelope 💌</button>
-<span class="hint">open this when you’re mad at me</span>
+    <div class="envelope" id="envelope">
+      <div class="flap"></div>
+      <div class="paper">
+        <b>Eva & Akhil 💕</b>
+        <p>I made this for you because I love you.</p>
+      </div>
+    </div>
 
-<div class="envelope" id="envelope">
-<div class="flap"></div>
-<div class="paper">
-<b>Eva & Akhil 💕</b>
-<p>I made this for you because I love you.</p>
-</div>
-</div>
+    <div class="secret" id="secret">
+      “I love you ❤️ Open this when you’re mad at me. I made it for you because I love you so can I have 5 diamond cartier ples dadi💗.”
+    </div>
 
-<div class="secret" id="secret">
-“I love you ❤️ Open this when you’re mad at me. I made it for you because I love you so can I have 5 diamond cartier ples dadi💗.”
-</div>
+    <button class="madBtn" id="madBtn">still mad? 😠</button>
 
-<button class="madBtn" id="madBtn">still mad? 😠</button>
+    <div style="margin-top:14px">
+      <p>Love Meter 💕</p>
+      <input type="range" id="loveMeter" min="0" max="100" value="0" style="width:100%">
+      <p id="loveLabel">0%</p>
+    </div>
 
-<div style="margin-top:14px">
-<p>Love Meter 💕</p>
-<input type="range" id="loveMeter" min="0" max="100" value="0" style="width:100%">
-<p id="loveLabel">0%</p>
-</div>
+    <!-- Countdown -->
+    <div id="countdownBox">
+      <div style="font-weight:800;">Countdown to January 12 🎀</div>
+      <div id="countdown" style="font-size:18px;margin-top:6px;">Loading…</div>
+    </div>
 
-<!-- Countdown -->
-<div id="countdownBox">
-  <div style="font-weight:800;">Countdown to January 12 🎀</div>
-  <div id="countdown" style="font-size:18px;margin-top:6px;">Loading…</div>
-</div>
-
-<img id="crMeme"
-src="https://media.tenor.com/6aQw5j8uZK0AAAAC/clash-royale-laugh.gif"
-alt="laughing">
-
-</div>
+    <img id="crMeme"
+      src="https://media.tenor.com/6aQw5j8uZK0AAAAC/clash-royale-laugh.gif"
+      alt="laughing">
+  </div>
 </div>
 
 <script>
-// TYPEWRITER (your text preserved)
+/* TYPEWRITER (your text preserved) */
 const lines=[
-"Eva & Akhil 💞",
-"I love you ❤️",
-"Hiiiiiiiiiiiiiiiiiiiiiiiii baby",
-"I made this while I should be studying but I thought of u 💗",
-"This is where I will send u letters and updates on us and ill wait for u to check it always I messed up the code a little sorry💗actually im charging u 20k for this thanks goodbye and ill alwways love u remember that when u check this website spent days making it"
+  "Eva & Akhil 💞",
+  "I love you ❤️",
+  "Hiiiiiiiiiiiiiiiiiiiiiiiii baby",
+  "I made this while I should be studying but I thought of u 💗",
+  "This is where I will send u letters and updates on us and ill wait for u to check it always I messed up the code a little sorry💗actually im charging u 20k for this thanks goodbye and ill alwways love u remember that when u check this website spent days making it"
 ];
 let i=0,j=0,del=false;
 const el=document.getElementById("type");
 (function loop(){
-el.textContent=lines[i].slice(0,del?--j:++j);
-if(!del&&j===lines[i].length){del=true;return setTimeout(loop,900)}
-if(del&&j===0){del=false;i=(i+1)%lines.length}
-setTimeout(loop,del?25:45)
+  el.textContent=lines[i].slice(0,del?--j:++j);
+  if(!del && j===lines[i].length){ del=true; return setTimeout(loop,900); }
+  if(del && j===0){ del=false; i=(i+1)%lines.length; }
+  setTimeout(loop, del?25:45);
 })();
 
-// TIME MESSAGE
-const h=new Date().getHours();
-document.getElementById("timeMsg").textContent=
-(h>=5&&h<12)?"Good morning baby ☀️":
-(h>=18||h<5)?"Goodnight my love 🌙":"Thinking of you 💗";
+/* TIME MESSAGE */
+const hour=new Date().getHours();
+document.getElementById("timeMsg").textContent =
+  (hour>=5 && hour<12) ? "Good morning baby ☀️" :
+  (hour>=18 || hour<5) ? "Goodnight my love 🌙" :
+  "Thinking of you 💗";
 
-// MOOD SWITCHER
-const moodPick = document.getElementById("moodPick");
-const moodMsg = document.getElementById("moodMsg");
+/* MOOD SWITCHER + SAVE */
+const moodPick=document.getElementById("moodPick");
+const moodMsg=document.getElementById("moodMsg");
+const card=document.getElementById("card");
+
 function applyMood(m){
-  const card = document.getElementById("card");
   if(m==="soft"){
     document.body.style.background="#ffe6f0";
     card.style.boxShadow="0 18px 55px rgba(0,0,0,.15)";
     moodMsg.textContent="soft mode: I miss you and I’m being cute 🥺💗";
   }
   if(m==="happy"){
-    document.body.style.background="#fff3bf";
-    card.style.boxShadow="0 18px 55px rgba(255,92,138,.25)";
-    moodMsg.textContent="happy mode: okayyy I love you extra today 🥰";
+    document.body.style.background="#ffb3d9";           // PINK PAGE
+    card.style.boxShadow="0 18px 55px rgba(255,92,138,.35)";
+    moodMsg.textContent="happy mode: okayyy I love you extra today 🥰💗";
+  }
+  if(m==="sad"){
+    document.body.style.background="#bfe3ff";           // BABY BLUE PAGE
+    card.style.boxShadow="0 18px 55px rgba(0,0,0,.10)";
+    moodMsg.textContent="sad mode: I miss you, come hug me pls 😔💙";
   }
   if(m==="mad"){
     document.body.style.background="#e9ecef";
@@ -159,9 +160,9 @@ function applyMood(m){
     moodMsg.textContent="mad mode: open the envelope rn 😠💌";
   }
   if(m==="chaos"){
-    document.body.style.background="#e5dbff";
-    card.style.boxShadow="0 18px 55px rgba(124,58,237,.25)";
-    moodMsg.textContent="chaos mode: I’m charging 20k again 😈";
+    document.body.style.background="linear-gradient(135deg,#7c3aed,#ff0000)"; // PURPLE + RED
+    card.style.boxShadow="0 18px 55px rgba(124,58,237,.35)";
+    moodMsg.textContent="chaos mode: I’m charging 20k again 😈💜❤️";
   }
   if(m==="sleepy"){
     document.body.style.background="#d0ebff";
@@ -169,90 +170,119 @@ function applyMood(m){
     moodMsg.textContent="sleepy mode: goodnight baby 😴🌙";
   }
 }
-applyMood(moodPick.value);
-moodPick.addEventListener("change", e => applyMood(e.target.value));
 
-// ENVELOPE
-openBtn.onclick=()=>{
-envelope.classList.add("show");
-setTimeout(()=>envelope.classList.toggle("open"),50);
-setTimeout(()=>secret.classList.toggle("show"),600);
-burst(innerWidth/2,innerHeight/2,18);
-};
-
-// STILL MAD BUTTON
-let mad=true;
-madBtn.onclick=()=>{
-mad=!mad;
-madBtn.textContent=mad?"still mad? 😠":"ok fine I love you ❤️";
-madBtn.classList.toggle("love",!mad);
-card.classList.toggle("heartbeat",!mad);
-crMeme.style.display=mad?"none":"block";
-};
-
-// LOVE METER
-loveMeter.oninput=()=>{
-loveMeter.value=Math.min(100,+loveMeter.value+5);
-loveLabel.textContent=loveMeter.value==100?"100% obsessed 💘":loveMeter.value+"%";
-};
-
-// COUNTDOWN TO JAN 12 (next occurrence)
-const cdEl = document.getElementById("countdown");
-function getNextJan12(){
-  const now = new Date();
-  const year = now.getFullYear();
-  let target = new Date(year, 0, 12, 0, 0, 0);
-  if(now > target) target = new Date(year + 1, 0, 12, 0, 0, 0);
-  return target;
+const savedMood = localStorage.getItem("evaAkhilMood");
+if(savedMood){
+  moodPick.value = savedMood;
+  applyMood(savedMood);
+} else {
+  applyMood(moodPick.value);
 }
-const target = getNextJan12();
+
+moodPick.addEventListener("change", e=>{
+  const m=e.target.value;
+  localStorage.setItem("evaAkhilMood", m);
+  applyMood(m);
+});
+
+/* ENVELOPE + SECRET */
+const openBtn=document.getElementById("openBtn");
+const envelope=document.getElementById("envelope");
+const secret=document.getElementById("secret");
+
+openBtn.onclick=()=>{
+  envelope.classList.add("show");
+  setTimeout(()=>envelope.classList.toggle("open"),50);
+  setTimeout(()=>secret.classList.toggle("show"),600);
+  burst(innerWidth/2,innerHeight/2,18);
+};
+
+/* STILL MAD BUTTON */
+const madBtn=document.getElementById("madBtn");
+const crMeme=document.getElementById("crMeme");
+let mad=true;
+
+madBtn.onclick=()=>{
+  mad=!mad;
+  madBtn.textContent = mad ? "still mad? 😠" : "ok fine I love you ❤️";
+  madBtn.classList.toggle("love", !mad);
+  card.classList.toggle("heartbeat", !mad);
+  crMeme.style.display = mad ? "none" : "block";
+};
+
+/* LOVE METER */
+const loveMeter=document.getElementById("loveMeter");
+const loveLabel=document.getElementById("loveLabel");
+loveMeter.oninput=()=>{
+  loveMeter.value=Math.min(100, +loveMeter.value + 5);
+  loveLabel.textContent = loveMeter.value==100 ? "100% obsessed 💘" : loveMeter.value + "%";
+};
+
+/* COUNTDOWN TO JAN 12 (next occurrence) */
+const cdEl=document.getElementById("countdown");
+function getNextJan12(){
+  const now=new Date();
+  const y=now.getFullYear();
+  let t=new Date(y,0,12,0,0,0);
+  if(now>t) t=new Date(y+1,0,12,0,0,0);
+  return t;
+}
+const target=getNextJan12();
 function tickCountdown(){
-  const now = new Date();
-  let diff = target - now;
-  if(diff <= 0){ cdEl.textContent = "IT’S JANUARY 12 🎉💗"; return; }
-  const total = Math.floor(diff/1000);
-  const d = Math.floor(total/86400);
-  const h = Math.floor((total%86400)/3600);
-  const m = Math.floor((total%3600)/60);
-  const s = total%60;
-  cdEl.textContent = `${d}d ${h}h ${m}m ${s}s`;
+  const now=new Date();
+  let diff=target-now;
+  if(diff<=0){ cdEl.textContent="IT’S JANUARY 12 🎉💗"; return; }
+  const total=Math.floor(diff/1000);
+  const d=Math.floor(total/86400);
+  const h=Math.floor((total%86400)/3600);
+  const m=Math.floor((total%3600)/60);
+  const s=total%60;
+  cdEl.textContent=`${d}d ${h}h ${m}m ${s}s`;
 }
 tickCountdown();
-setInterval(tickCountdown, 1000);
+setInterval(tickCountdown,1000);
 
-// FLOATING HEARTS
+/* FLOATING HEARTS */
 const hearts=["💗","💞","💖","💘","💕","❤️"];
 function spawn(x,y){
-const h=document.createElement("div");
-h.className="heart";
-h.textContent=hearts[Math.random()*hearts.length|0];
-h.style.left=x+"px";h.style.top=y+"px";
-h.style.animationDuration=(3+Math.random()*3)+"s";
-document.body.appendChild(h);
-setTimeout(()=>h.remove(),6000);
+  const h=document.createElement("div");
+  h.className="heart";
+  h.textContent=hearts[Math.random()*hearts.length|0];
+  h.style.left=x+"px";
+  h.style.top=y+"px";
+  h.style.animationDuration=(3+Math.random()*3)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
 }
-function burst(x,y,n){for(let i=0;i<n;i++)spawn(x+Math.random()*120-60,y)}
-setInterval(()=>spawn(Math.random()*innerWidth,innerHeight+20),700);
+function burst(x,y,n){for(let k=0;k<n;k++)spawn(x+Math.random()*120-60,y)}
+setInterval(()=>spawn(Math.random()*innerWidth, innerHeight+20),700);
 onclick=e=>burst(e.clientX,e.clientY,10);
 
-// SPARKLES
+/* SPARKLES */
 const c=document.getElementById("sparkles"),ctx=c.getContext("2d");
-let W,H;onresize=()=>{W=c.width=innerWidth;H=c.height=innerHeight};onresize();
+let W,H;
+onresize=()=>{W=c.width=innerWidth;H=c.height=innerHeight};
+onresize();
 const p=[];
-onmousemove=e=>{for(let i=0;i<3;i++)p.push({x:e.clientX,y:e.clientY,vx:Math.random()*2-1,vy:Math.random()*2-1,l:1})};
+onmousemove=e=>{for(let k=0;k<3;k++)p.push({x:e.clientX,y:e.clientY,vx:Math.random()*2-1,vy:Math.random()*2-1,l:1})};
 (function draw(){
-ctx.clearRect(0,0,W,H);
-for(let i=p.length-1;i>=0;i--){
-const s=p[i];s.x+=s.vx;s.y+=s.vy;s.l-=.03;
-if(s.l<=0)p.splice(i,1);
-ctx.globalAlpha=s.l;ctx.beginPath();ctx.arc(s.x,s.y,2,0,6.28);ctx.fillStyle="white";ctx.fill();
-}
-ctx.globalAlpha=1;requestAnimationFrame(draw);
+  ctx.clearRect(0,0,W,H);
+  for(let k=p.length-1;k>=0;k--){
+    const s=p[k];
+    s.x+=s.vx; s.y+=s.vy; s.l-=.03;
+    if(s.l<=0){p.splice(k,1); continue;}
+    ctx.globalAlpha=s.l;
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,2,0,6.28);
+    ctx.fillStyle="white";
+    ctx.fill();
+  }
+  ctx.globalAlpha=1;
+  requestAnimationFrame(draw);
 })();
 </script>
 </body>
 </html>
-
 
 
 
