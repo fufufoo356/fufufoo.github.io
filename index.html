@@ -332,7 +332,7 @@ const card=document.getElementById("card");
 let mad=true;
 madBtn.addEventListener("click", ()=>{
   mad=!mad;
-  madBtn.textContent=mad?"still mad? 😠":"ok fine I love you ❤️";
+  madBtn.textContent=mad?"still mad? 😠":"I'm sorry my love, talk to me about what's wrong";
   madBtn.classList.toggle("love",!mad);
   card.classList.toggle("heartbeat",!mad);
   crMeme.style.display=mad?"none":"block";
@@ -457,9 +457,9 @@ pianoBtn.addEventListener("click", ()=>{
 
 /* SIDE SCROLL LETTERS (YOU WRITE THESE HERE) */
 const LETTERS = {
-  mad:  { title:"Open when mad 😠",  text:"(write your mad letter here)\n\nExample: I love you. I’m sorry. I’m listening. I want to fix it, not fight you. 💗" },
-  sad:  { title:"Open when sad 😔",  text:"(write your sad letter here)\n\nExample: Come here. You don’t have to carry it alone. I’m with you always. 💙" },
-  miss: { title:"Open when you miss me 🥺", text:"(write your miss-me letter here)\n\nExample: I miss you too. Pretend this is a hug. 🥺💗" }
+  mad:  { title:"Open when mad 😠",  text:"\n\n I love you. I’m sorry. I’m listening. I want to fix it, not fight you. 💗" },
+  sad:  { title:"Open when sad 😔",  text:"\n\n Come here. You don’t have to carry it alone. I’m with you always. 💙" },
+  miss: { title:"Open when you miss me 🥺", text:"\n\n I miss you too. Pretend this is a hug. 🥺💗" }
 };
 
 const overlay=document.getElementById("drawerOverlay");
