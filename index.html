@@ -135,6 +135,9 @@ button,select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;curs
 
     <div class="row">
       <span class="pill">Hearts: <span id="heartCount">0</span> 💞</span>
+      <span class="pill">Paneer: <span id="paneerCount">0</span> 🧀</span>
+      <button id="paneerBtn" class="smallBtn">+ paneer 🧀</button>
+
       <button id="apologyBtn" class="smallBtn">apology generator 🥺</button>
       <button id="rainBtn" class="smallBtn">rain: off 🌧️</button>
       <button id="pianoBtn" class="smallBtn">piano: off 🎹</button>
@@ -154,6 +157,8 @@ button,select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;curs
 
     <button class="madBtn" id="madBtn">still mad? 😠</button>
 
+    <div id="countdownBox"><div style="font-weight:900;color:#c2255c;">Countdown to January 12 🎀</div><div id="countdown" style="font-size:18px;margin-top:6px;">Loading…</div></div>
+
     <div class="timeline">
       <h3>Timeline of us 💞</h3>
       <div class="tItem"><div class="dot"></div><div class="tText"><b>End of August:</b> we met 🥺</div></div>
@@ -168,7 +173,6 @@ button,select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;curs
       <div class="small"> Many more coming </div>
     </div>
 
-    <!-- GIF: starts hidden; will show when "still mad?" toggled -->
     <img id="crMeme" src="https://media.tenor.com/w2mCAR7kgUsAAAAM/clash-royale-emotes.gif" alt="clash royale laugh" style="width:140px;margin:10px auto;border-radius:12px;display:none;">
   </div>
 </div>
@@ -201,13 +205,14 @@ document.getElementById("timeMsg").textContent =
   (hour>=18 || hour<5) ? "Goodnight my love 🌙" :
   "Thinking of you 💗";
 
-/* Daily quote */
+/* Daily quote (added paneer joke) */
 const quotes=[
   "You are my favorite notification.",
   "I’m on your team. Always.",
   "I love you in every mood.",
   "You + me = home.",
-  "Even when we’re annoyed… I still choose you."
+  "Even when we’re annoyed… I still choose you.",
+  "Fun fact: you are 60% paneer at this point 🧀💀 (and I still love you)"
 ];
 const todayKey=new Date().toISOString().slice(0,10);
 let savedQuoteKey=localStorage.getItem("evaQuoteDay"),
@@ -229,6 +234,21 @@ function addHearts(n){
 }
 heartCountEl.textContent=String(heartCount);
 
+/* Paneer counter (NEW) */
+const paneerCountEl=document.getElementById("paneerCount");
+const paneerBtn=document.getElementById("paneerBtn");
+let paneerCount=Number(localStorage.getItem("evaPaneerCount")||"0");
+function addPaneer(n){
+  paneerCount+=n;
+  localStorage.setItem("evaPaneerCount",String(paneerCount));
+  paneerCountEl.textContent=String(paneerCount);
+}
+paneerCountEl.textContent=String(paneerCount);
+paneerBtn.addEventListener("click",()=>{
+  addPaneer(1);
+  burstHearts(innerWidth/2, innerHeight/2, 6);
+});
+
 /* Envelope + secret */
 const openBtn=document.getElementById("openBtn"),
       envelope=document.getElementById("envelope"),
@@ -247,12 +267,33 @@ const madBtn=document.getElementById("madBtn"),
 let mad=true;
 madBtn.addEventListener("click",()=>{
   mad=!mad;
-  madBtn.textContent = mad ? "still mad? 😠" : "I'm sorry my love, talk to me about what's wrong";
+  madBtn.textContent = mad ? "still mad? 😠" : "I'm sorry my love. I’ll listen… even if you’re mad AND eating paneer 🧀🥺";
   madBtn.classList.toggle("love",!mad);
   card.classList.toggle("heartbeat",!mad);
   crMeme.style.display = mad ? "none" : "block";
 });
 
+/* Countdown */
+const cdEl=document.getElementById("countdown");
+function getNextJan12(){
+  const now=new Date(),y=now.getFullYear();
+  let t=new Date(y,0,12,0,0,0);
+  if(now>t) t=new Date(y+1,0,12,0,0,0);
+  return t;
+}
+const target=getNextJan12();
+function tickCountdown(){
+  const now=new Date(),diff=target-now;
+  if(diff<=0){ cdEl.textContent="IT’S JANUARY 12 🎉💗"; return; }
+  const total=Math.floor(diff/1000),
+        d=Math.floor(total/86400),
+        h=Math.floor((total%86400)/3600),
+        m=Math.floor((total%3600)/60),
+        s=total%60;
+  cdEl.textContent=`${d}d ${h}h ${m}m ${s}s`;
+}
+tickCountdown();
+setInterval(tickCountdown,1000);
 
 /* Hearts floating */
 const heartEmojis=["💗","💞","💖","💘","💕","❤️"];
@@ -287,7 +328,7 @@ apologyBtn.addEventListener("click",()=>{
   apologyOut.textContent=apologies[(Math.random()*apologies.length)|0];
 });
 
-/* Rain + Piano (FIXED: define rainBtn/pianoBtn) */
+/* Rain + Piano (fixed) */
 const rainBtn=document.getElementById("rainBtn");
 const pianoBtn=document.getElementById("pianoBtn");
 
@@ -375,7 +416,7 @@ pianoBtn.addEventListener("click",()=>{
 
 /* Side letters */
 const LETTERS={
-  mad:{title:"Open when mad 😠",text:"\n\n I love you. I’m sorry. I’m listening. I want to fix it, not fight you. 💗"},
+  mad:{title:"Open when mad 😠",text:"\n\n I love you. I’m sorry. I’m listening. I want to fix it, not fight you. 💗\n\n(also… stop stress-eating paneer 🧀😭)"},
   sad:{title:"Open when sad 😔",text:"\n\n Come here. You don’t have to carry it alone. I’m with you always. 💙"},
   miss:{title:"Open when you miss me 🥺",text:"\n\n I miss you too. Pretend this is a hug. 🥺💗"}
 };
