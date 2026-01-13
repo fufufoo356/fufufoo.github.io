@@ -226,4 +226,36 @@ addEventListener("click",e=>burstHearts(e.clientX,e.clientY,10),{passive:true});
 /* Apology generator */
 const apologyBtn=document.getElementById("apologyBtn"),apologyOut=document.getElementById("apologyOut");
 const apologies=["im sorry my love i never mean to hurt you or make you feel sad.","im sorry baby. i love you and i’m listening. come here 🥺","im sorry my love. you matter to me more than my ego. 💗"];
-apologyBtn.addEventListener("click",()=>{apologyOut
+apologyBtn.addEventListener("click",()=>{apologyOut.style.display="block";apologyOut.textContent=apologies[(Math.random()*apologies.length)|0];});
+
+/* Rain + Piano */
+let audioCtx=null,rainOn=false,pianoOn=false,rainNode=null,rainGain=null,pianoTimer=null;
+function ensureAudio(){if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();}
+function startRain(){ensureAudio();const bufferSize=2*audioCtx.sampleRate;const noiseBuffer=audioCtx.createBuffer(1,bufferSize,audioCtx.sampleRate);const out=noiseBuffer.getChannelData(0);for(let k=0;k<bufferSize;k++)out[k]=Math.random()*2-1;const white=audioCtx.createBufferSource();white.buffer=noiseBuffer;white.loop=true;const filter=audioCtx.createBiquadFilter();filter.type="lowpass";filter.frequency.value=900;rainGain=audioCtx.createGain();rainGain.gain.value=0.0;white.connect(filter);filter.connect(rainGain);rainGain.connect(audioCtx.destination);white.start();rainNode=white;rainGain.gain.linearRampToValueAtTime(0.18,audioCtx.currentTime+0.6);}
+function stopRain(){if(rainGain)rainGain.gain.linearRampToValueAtTime(0.0,audioCtx.currentTime+0.4);setTimeout(()=>{try{rainNode&&rainNode.stop()}catch(e){}rainNode=null;rainGain=null;},500);}
+function playPianoNote(freq,when,dur){const osc=audioCtx.createOscillator();const gain=audioCtx.createGain();osc.type="triangle";osc.frequency.value=freq;gain.gain.setValueAtTime(0.0001,when);gain.gain.exponentialRampToValueAtTime(0.08,when+0.02);gain.gain.exponentialRampToValueAtTime(0.0001,when+dur);osc.connect(gain);gain.connect(audioCtx.destination);osc.start(when);osc.stop(when+dur+0.02);}
+function startPiano(){ensureAudio();const scale=[261.63,293.66,329.63,392.00,440.00];let step=0;pianoTimer=setInterval(()=>{const now=audioCtx.currentTime;const f1=scale[step%scale.length];const f2=scale[(step+2)%scale.length]/2;playPianoNote(f1,now,0.6);playPianoNote(f2,now,0.8);step++;},900);}
+function stopPiano(){if(pianoTimer)clearInterval(pianoTimer);pianoTimer=null;}
+document.getElementById("rainBtn").addEventListener("click",()=>{rainOn=!rainOn;if(rainOn){startRain();rainBtn.textContent="rain: on 🌧️";}else{stopRain();rainBtn.textContent="rain: off 🌧️";}});
+document.getElementById("pianoBtn").addEventListener("click",()=>{pianoOn=!pianoOn;if(pianoOn){ensureAudio();startPiano();pianoBtn.textContent="piano: on 🎹";}else{stopPiano();pianoBtn.textContent="piano: off 🎹";}});
+
+/* Side letters */
+const LETTERS={mad:{title:"Open when mad 😠",text:"\n\n I love you. I’m sorry. I’m listening. I want to fix it, not fight you. 💗"},sad:{title:"Open when sad 😔",text:"\n\n Come here. You don’t have to carry it alone. I’m with you always. 💙"},miss:{title:"Open when you miss me 🥺",text:"\n\n I miss you too. Pretend this is a hug. 🥺💗"}};
+const overlay=document.getElementById("drawerOverlay"),drawer=document.getElementById("drawer"),dTitle=document.getElementById("drawerTitle"),dText=document.getElementById("drawerText"),closeBtn=document.getElementById("drawerClose");
+function openLetter(key){const L=LETTERS[key];dTitle.textContent=L.title;dText.textContent=L.text;overlay.classList.add("show");drawer.classList.add("show");drawer.setAttribute("aria-hidden","false");}
+function closeLetter(){drawer.classList.remove("show");overlay.classList.remove("show");drawer.setAttribute("aria-hidden","true");}
+document.querySelectorAll(".sideBtn").forEach(b=>b.addEventListener("click",()=>openLetter(b.dataset.letter)));
+overlay.addEventListener("click",closeLetter);closeBtn.addEventListener("click",closeLetter);
+
+/* Sparkles cursor */
+const c=document.getElementById("sparkles"),ctx=c.getContext("2d");let W,H;
+function resize(){W=c.width=innerWidth;H=c.height=innerHeight;}
+addEventListener("resize",resize);resize();
+const p=[];
+function addSparkle(x,y){for(let k=0;k<3;k++)p.push({x,y,vx:(Math.random()*2-1)*1.8,vy:(Math.random()*2-1)*1.8,life:1,r:1+Math.random()*2.2});}
+addEventListener("mousemove",e=>addSparkle(e.clientX,e.clientY),{passive:true});
+(function draw(){ctx.clearRect(0,0,W,H);for(let k=p.length-1;k>=0;k--){const s=p[k];s.x+=s.vx;s.y+=s.vy;s.vy+=0.03;s.life-=0.03;if(s.life<=0){p.splice(k,1);continue;}ctx.globalAlpha=Math.max(s.life,0);ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle="white";ctx.fill();}ctx.globalAlpha=1;requestAnimationFrame(draw);})();
+</script>
+</body>
+</html>
+
