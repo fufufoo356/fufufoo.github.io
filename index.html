@@ -6,33 +6,25 @@
 <title>Eva & Akhil ❤️</title>
 
 <style>
-/* Fade-in */
 html,body{height:100%}
 body{
   margin:0;min-height:100vh;background:#ffe6f0;font-family:Arial,sans-serif;
-  overflow:auto; -webkit-overflow-scrolling:touch; /* <-- phone scroll fix */
-  opacity:0; transition:opacity 1.2s ease;
+  overflow:auto;-webkit-overflow-scrolling:touch;
+  opacity:0;transition:opacity 1.2s ease;
 }
 body.loaded{opacity:1}
-
 #sparkles{position:fixed;inset:0;pointer-events:none;z-index:50}
 
-/* Layout: allow scroll instead of centered-lock */
 .wrap{
-  min-height:100vh;
-  display:flex;
-  align-items:flex-start;          /* <-- important for mobile scrolling */
-  justify-content:center;
-  padding:24px;
+  min-height:100vh; display:flex; align-items:flex-start; justify-content:center; padding:24px;
 }
 .card{
   background:white;width:min(560px,92vw);padding:26px;border-radius:22px;
   box-shadow:0 18px 55px rgba(0,0,0,.15);text-align:center;position:relative;z-index:2;
-  margin:18px 0 60px;             /* space for scroll */
+  margin:18px 0 60px;
 }
 .type{font-size:22px;font-weight:800;color:#c2255c;min-height:64px;margin:0 0 10px}
-
-button, select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;cursor:pointer}
+button,select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;cursor:pointer}
 .openBtn{background:#ff5c8a;color:white;box-shadow:0 10px 25px rgba(255,92,138,.35)}
 .madBtn{background:#adb5bd;color:white;margin-top:10px}
 .madBtn.love{background:#ff5c8a}
@@ -51,31 +43,20 @@ button, select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;cur
 .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;align-items:center;margin-top:12px}
 .pill{display:inline-block;background:#fff0f6;border-radius:999px;padding:8px 12px;font-weight:800;color:#c2255c}
 
-.heart{
-  position:fixed;z-index:40;pointer-events:none;font-size:18px;
-  filter:drop-shadow(0 6px 10px rgba(0,0,0,.12));
-  animation:floatUp linear forwards
-}
-@keyframes floatUp{
-  from{transform:translate(-50%,0);opacity:0}
-  10%{opacity:1}
-  to{transform:translate(-50%,-110vh);opacity:0}
-}
+.heart{position:fixed;z-index:40;pointer-events:none;font-size:18px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.12));animation:floatUp linear forwards}
+@keyframes floatUp{from{transform:translate(-50%,0);opacity:0}10%{opacity:1}to{transform:translate(-50%,-110vh);opacity:0}}
 
 .envelope{display:none;margin:16px auto 0;width:320px;height:210px;position:relative}
 .envelope.show{display:block}
-.paper{
-  position:absolute;left:50%;bottom:12px;transform:translateX(-50%) translateY(80px);
+.paper{position:absolute;left:50%;bottom:12px;transform:translateX(-50%) translateY(80px);
   width:86%;background:white;border-radius:14px;padding:16px;transition:.7s;
   box-shadow:0 12px 30px rgba(0,0,0,.18)
 }
-.flap{
-  position:absolute;inset:0;background:linear-gradient(135deg,#ff85a2,#ff4d6d);
+.flap{position:absolute;inset:0;background:linear-gradient(135deg,#ff85a2,#ff4d6d);
   clip-path:polygon(0 0,100% 0,50% 55%);transform-origin:top;transition:.7s;
   border-radius:18px;box-shadow:inset 0 -10px 30px rgba(255,255,255,.25)
 }
-.envelope::before{
-  content:"";position:absolute;inset:0;border-radius:18px;
+.envelope::before{content:"";position:absolute;inset:0;border-radius:18px;
   background:linear-gradient(135deg,#ffd1dc,#ffb3c6);
   clip-path:polygon(0 0,100% 0,100% 100%,50% 70%,0 100%);
 }
@@ -88,23 +69,18 @@ button, select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;cur
 #countdownBox{margin-top:14px;padding:12px;border-radius:14px;background:#fff0f6}
 #crMeme{display:none;width:120px;margin:10px auto;border-radius:12px}
 
-/* Timeline */
 .timeline{margin-top:14px;text-align:left;background:#fff0f6;border-radius:16px;padding:12px}
 .timeline h3{margin:0 0 8px;color:#c2255c}
 .tItem{display:flex;gap:10px;align-items:flex-start;margin:8px 0}
 .dot{width:10px;height:10px;border-radius:50%;background:#ff5c8a;margin-top:5px;flex:0 0 auto}
 .tText{color:#444}
 
-/* Promises (shine) */
-.shineBox{
-  margin-top:14px;text-align:left;position:relative;overflow:hidden;
+.shineBox{margin-top:14px;text-align:left;position:relative;overflow:hidden;
   background:linear-gradient(135deg,#fff0f6,#ffe6f0);
   border-radius:16px;padding:12px;
   box-shadow:0 10px 25px rgba(0,0,0,.06)
 }
-.shineBox::after{
-  content:""; position:absolute; top:-40%; left:-60%;
-  width:60%; height:180%;
+.shineBox::after{content:""; position:absolute; top:-40%; left:-60%; width:60%; height:180%;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent);
   transform:rotate(20deg);
   animation:shine 2.8s infinite;
@@ -114,66 +90,33 @@ button, select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;cur
 .shineBox ul{margin:0;padding-left:18px;color:#444}
 .small{font-size:13px;color:#666;margin-top:6px}
 
-/* SIDE LETTER SCROLLS */
-.sideLetters{
-  position:fixed; right:12px; top:110px; z-index:80;
-  display:flex; flex-direction:column; gap:10px;
-}
-.sideBtn{
-  background:#ff5c8a; color:white; border-radius:999px;
-  padding:10px 12px; font-weight:900; box-shadow:0 10px 25px rgba(255,92,138,.35);
-}
+.sideLetters{position:fixed; right:12px; top:110px; z-index:80;display:flex; flex-direction:column; gap:10px;}
+.sideBtn{background:#ff5c8a; color:white; border-radius:999px;padding:10px 12px; font-weight:900; box-shadow:0 10px 25px rgba(255,92,138,.35);}
 .sideBtn:active{transform:translateY(1px)}
-@media (max-width:420px){
-  .sideLetters{right:8px; top:90px}
-  .sideBtn{padding:9px 10px; font-size:13px}
-}
+@media (max-width:420px){.sideLetters{right:8px; top:90px}.sideBtn{padding:9px 10px; font-size:13px}}
 
-/* Slide-out panel */
-.drawerOverlay{
-  position:fixed; inset:0; background:rgba(0,0,0,.25);
-  display:none; z-index:90;
-}
+.drawerOverlay{position:fixed; inset:0; background:rgba(0,0,0,.25);display:none; z-index:90;}
 .drawerOverlay.show{display:block}
-.drawer{
-  position:fixed; top:0; right:0; height:100%; width:min(420px,92vw);
-  transform:translateX(110%); transition:transform .25s ease;
-  z-index:100;
-  padding:18px 14px 18px;
-  display:flex; flex-direction:column; gap:10px;
-}
+.drawer{position:fixed; top:0; right:0; height:100%; width:min(420px,92vw);transform:translateX(110%); transition:transform .25s ease;
+  z-index:100; padding:18px 14px 18px; display:flex; flex-direction:column; gap:10px;}
 .drawer.show{transform:translateX(0)}
-/* Scroll look */
-.scrollCard{
-  background:linear-gradient(180deg,#fff7fb,#ffe6f0);
-  border-radius:18px;
-  box-shadow:0 18px 55px rgba(0,0,0,.20);
-  padding:14px 14px 16px;
-  position:relative;
-  overflow:auto;
-  -webkit-overflow-scrolling:touch;
-}
-.scrollTop{
-  font-weight:900;color:#c2255c;margin:0 0 8px;font-size:18px
-}
+.scrollCard{background:linear-gradient(180deg,#fff7fb,#ffe6f0);border-radius:18px;box-shadow:0 18px 55px rgba(0,0,0,.20);
+  padding:14px 14px 16px; position:relative; overflow:auto; -webkit-overflow-scrolling:touch;}
+.scrollTop{font-weight:900;color:#c2255c;margin:0 0 8px;font-size:18px}
 .scrollText{margin:0;color:#444;line-height:1.45;white-space:pre-wrap}
-.drawerClose{
-  align-self:flex-end; background:#fff0f6; border-radius:14px; font-weight:900;
-}
+.drawerClose{align-self:flex-end; background:#fff0f6; border-radius:14px; font-weight:900;}
 </style>
 </head>
 
 <body>
 <canvas id="sparkles"></canvas>
 
-<!-- Side scroll buttons -->
 <div class="sideLetters">
   <button class="sideBtn" data-letter="mad">mad 😠</button>
   <button class="sideBtn" data-letter="sad">sad 😔</button>
   <button class="sideBtn" data-letter="miss">miss 🥺</button>
 </div>
 
-<!-- Drawer -->
 <div id="drawerOverlay" class="drawerOverlay"></div>
 <div id="drawer" class="drawer" aria-hidden="true">
   <button id="drawerClose" class="drawerClose">close ✖</button>
@@ -185,14 +128,10 @@ button, select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;cur
 
 <div class="wrap">
   <div class="card" id="card">
-
     <div id="type" class="type"></div>
     <p id="timeMsg"></p>
 
-    <div id="dailyQuote">
-      <b>Daily love quote 💗</b>
-      <div id="quoteText" style="margin-top:6px;"></div>
-    </div>
+    <div id="dailyQuote"><b>Daily love quote 💗</b><div id="quoteText" style="margin-top:6px;"></div></div>
 
     <div class="row">
       <span class="pill">Hearts: <span id="heartCount">0</span> 💞</span>
@@ -208,308 +147,83 @@ button, select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;cur
 
     <div class="envelope" id="envelope">
       <div class="flap"></div>
-      <div class="paper">
-        <b>Eva & Akhil 💕</b>
-        <p style="margin:8px 0 0;">I made this for you because I love you.</p>
-      </div>
+      <div class="paper"><b>Eva & Akhil 💕</b><p style="margin:8px 0 0;">I made this for you because I love you.</p></div>
     </div>
 
-    <div class="secret" id="secret">
-      “I love you ❤️ Open this when you’re mad at me. I made it for you because I love you so can I have 5 diamond cartier ples dadi💗.”
-    </div>
+    <div class="secret" id="secret">“I love you ❤️ Open this when you’re mad at me. I made it for you because I love you so can I have 5 diamond cartier ples dadi💗.”</div>
 
     <button class="madBtn" id="madBtn">still mad? 😠</button>
 
+    <div id="countdownBox"><div style="font-weight:900;color:#c2255c;">Countdown to January 12 🎀</div><div id="countdown" style="font-size:18px;margin-top:6px;">Loading…</div></div>
 
-
-    <div id="countdownBox">
-      <div style="font-weight:900;color:#c2255c;">Countdown to January 12 🎀</div>
-      <div id="countdown" style="font-size:18px;margin-top:6px;">Loading…</div>
-    </div>
-
-    <!-- Timeline -->
     <div class="timeline">
       <h3>Timeline of us 💞</h3>
       <div class="tItem"><div class="dot"></div><div class="tText"><b>End of August:</b> we met 🥺</div></div>
       <div class="tItem"><div class="dot"></div><div class="tText"><b>Halloween:</b> we started dating 🎃💕</div></div>
       <div class="tItem"><div class="dot"></div><div class="tText"><b>Jan 13:</b> you gave me a handmade and real bouquet 🥺</div></div>
       <div class="tItem"><div class="dot"></div><div class="tText"><b>Jan 13:</b> we made our first videooooo 😈</div></div>
-
     </div>
 
-    <!-- Promise list (exactly like you asked: blanks + the one promise) -->
     <div class="shineBox">
       <h3>Promise list ✨</h3>
-      <ul>
-        <li><b>I promise to always be there for you no matter what.</b></li>
-      </ul>
+      <ul><li><b>I promise to always be there for you no matter what.</b></li></ul>
       <div class="small"> Many more coming </div>
     </div>
 
-    <img id="crMeme"
-  src="https://media.tenor.com/w2mCAR7kgUsAAAAM/clash-royale-emotes.gif"
-  alt="clash royale laugh"
-  style="width:140px;margin:10px auto;border-radius:12px;display:block;">
+    <img id="crMeme" src="https://media.tenor.com/w2mCAR7kgUsAAAAM/clash-royale-emotes.gif" alt="clash royale laugh" style="width:140px;margin:10px auto;border-radius:12px;display:block;">
+  </div>
+</div>
 
- 
 <script>
-/* Fade in */
 addEventListener("load", ()=> document.body.classList.add("loaded"));
 
-/* TYPEWRITER (your text preserved) */
-const lines=[
-  "Eva & Akhil 💞",
-  "I love you ❤️",
-  "Hiiiiiiiiiiiiiiiiiiiiiiiii baby",
-  "I made this while I should be studying but I thought of u 💗",
-  "This is where I will send u letters and updates on us and ill wait for u to check it always I messed up the code a little sorry💗actually im charging u 20k for this thanks goodbye and ill alwways love u remember that when u check this website spent days making it"
-];
+/* Typewriter */
+const lines=["Eva & Akhil 💞","I love you ❤️","Hiiiiiiiiiiiiiiiiiiiiiiiii baby","I made this while I should be studying but I thought of u 💗","This is where I will send u letters and updates on us and ill wait for u to check it always I messed up the code a little sorry💗actually im charging u 20k for this thanks goodbye and ill alwways love u remember that when u check this website spent days making it"];
 let i=0,j=0,del=false;
 const el=document.getElementById("type");
-(function loop(){
-  el.textContent=lines[i].slice(0,del?--j:++j);
-  if(!del && j===lines[i].length){ del=true; return setTimeout(loop,900); }
-  if(del && j===0){ del=false; i=(i+1)%lines.length; }
-  setTimeout(loop, del?25:45);
-})();
+(function loop(){el.textContent=lines[i].slice(0,del?--j:++j);if(!del&&j===lines[i].length){del=true;return setTimeout(loop,900);}if(del&&j===0){del=false;i=(i+1)%lines.length;}setTimeout(loop,del?25:45);})();
 
-/* TIME MESSAGE */
+/* Time message */
 const hour=new Date().getHours();
-document.getElementById("timeMsg").textContent =
-  (hour>=5 && hour<12) ? "Good morning baby ☀️" :
-  (hour>=18 || hour<5) ? "Goodnight my love 🌙" :
-  "Thinking of you 💗";
+document.getElementById("timeMsg").textContent=(hour>=5&&hour<12)?"Good morning baby ☀️":(hour>=18||hour<5)?"Goodnight my love 🌙":"Thinking of you 💗";
 
-/* DAILY LOVE QUOTE */
-const quotes=[
-  "You are my favorite notification.",
-  "I’m on your team. Always.",
-  "I love you in every mood.",
-  "You + me = home.",
-  "Even when we’re annoyed… I still choose you."
-];
-function dayKey(d=new Date()){
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-}
-const todayKey=dayKey();
-let savedQuoteKey=localStorage.getItem("evaQuoteDay");
-let savedQuote=localStorage.getItem("evaQuoteText");
-if(savedQuoteKey!==todayKey || !savedQuote){
-  const seed=(new Date().getFullYear()*10000)+((new Date().getMonth()+1)*100)+new Date().getDate();
-  savedQuote=quotes[seed%quotes.length];
-  localStorage.setItem("evaQuoteDay",todayKey);
-  localStorage.setItem("evaQuoteText",savedQuote);
-}
+/* Daily quote */
+const quotes=["You are my favorite notification.","I’m on your team. Always.","I love you in every mood.","You + me = home.","Even when we’re annoyed… I still choose you."];
+const todayKey=new Date().toISOString().slice(0,10);
+let savedQuoteKey=localStorage.getItem("evaQuoteDay"),savedQuote=localStorage.getItem("evaQuoteText");
+if(savedQuoteKey!==todayKey||!savedQuote){savedQuote=quotes[(new Date().getFullYear()*10000+((new Date().getMonth()+1)*100)+new Date().getDate())%quotes.length];localStorage.setItem("evaQuoteDay",todayKey);localStorage.setItem("evaQuoteText",savedQuote);}
 document.getElementById("quoteText").textContent=savedQuote;
 
 /* Heart counter */
 const heartCountEl=document.getElementById("heartCount");
 let heartCount=Number(localStorage.getItem("evaHeartCount")||"0");
-function addHearts(n){
-  heartCount+=n;
-  localStorage.setItem("evaHeartCount",String(heartCount));
-  heartCountEl.textContent=String(heartCount);
-}
+function addHearts(n){heartCount+=n;localStorage.setItem("evaHeartCount",String(heartCount));heartCountEl.textContent=String(heartCount);}
 heartCountEl.textContent=String(heartCount);
 
 /* Envelope + secret */
-const openBtn=document.getElementById("openBtn");
-const envelope=document.getElementById("envelope");
-const secret=document.getElementById("secret");
-openBtn.addEventListener("click", ()=>{
-  envelope.classList.add("show");
-  setTimeout(()=>envelope.classList.toggle("open"),50);
-  setTimeout(()=>secret.classList.toggle("show"),650);
-  burstHearts(innerWidth/2, innerHeight/2, 18);
-});
+const openBtn=document.getElementById("openBtn"),envelope=document.getElementById("envelope"),secret=document.getElementById("secret");
+openBtn.addEventListener("click",()=>{envelope.classList.add("show");setTimeout(()=>envelope.classList.toggle("open"),50);setTimeout(()=>secret.classList.toggle("show"),650);burstHearts(innerWidth/2,innerHeight/2,18);});
 
-/* Still mad button + meme + heartbeat */
-const madBtn=document.getElementById("madBtn");
-const crMeme=document.getElementById("crMeme");
-const card=document.getElementById("card");
+/* Still mad */
+const madBtn=document.getElementById("madBtn"),crMeme=document.getElementById("crMeme"),card=document.getElementById("card");
 let mad=true;
-madBtn.addEventListener("click", ()=>{
-  mad=!mad;
-  madBtn.textContent=mad?"still mad? 😠":"I'm sorry my love, talk to me about what's wrong";
-  madBtn.classList.toggle("love",!mad);
-  card.classList.toggle("heartbeat",!mad);
-  crMeme.style.display=mad?"none":"block";
-});
-
+madBtn.addEventListener("click",()=>{mad=!mad;madBtn.textContent=mad?"still mad? 😠":"I'm sorry my love, talk to me about what's wrong";madBtn.classList.toggle("love",!mad);card.classList.toggle("heartbeat",!mad);crMeme.style.display=mad?"none":"block";});
 
 /* Countdown */
 const cdEl=document.getElementById("countdown");
-function getNextJan12(){
-  const now=new Date(), y=now.getFullYear();
-  let t=new Date(y,0,12,0,0,0);
-  if(now>t) t=new Date(y+1,0,12,0,0,0);
-  return t;
-}
+function getNextJan12(){const now=new Date(),y=now.getFullYear();let t=new Date(y,0,12,0,0,0);if(now>t)t=new Date(y+1,0,12,0,0,0);return t;}
 const target=getNextJan12();
-function tickCountdown(){
-  const now=new Date(), diff=target-now;
-  if(diff<=0){ cdEl.textContent="IT’S JANUARY 12 🎉💗"; return; }
-  const total=Math.floor(diff/1000);
-  const d=Math.floor(total/86400);
-  const h=Math.floor((total%86400)/3600);
-  const m=Math.floor((total%3600)/60);
-  const s=total%60;
-  cdEl.textContent=`${d}d ${h}h ${m}m ${s}s`;
-}
+function tickCountdown(){const now=new Date(),diff=target-now;if(diff<=0){cdEl.textContent="IT’S JANUARY 12 🎉💗";return;}const total=Math.floor(diff/1000),d=Math.floor(total/86400),h=Math.floor((total%86400)/3600),m=Math.floor((total%3600)/60),s=total%60;cdEl.textContent=`${d}d ${h}h ${m}m ${s}s`;}
 tickCountdown(); setInterval(tickCountdown,1000);
 
-/* Floating hearts */
+/* Hearts floating */
 const heartEmojis=["💗","💞","💖","💘","💕","❤️"];
-function spawnHeart(x,y){
-  const h=document.createElement("div");
-  h.className="heart";
-  h.textContent=heartEmojis[(Math.random()*heartEmojis.length)|0];
-  h.style.left=x+"px";
-  h.style.top=y+"px";
-  h.style.fontSize=(14+Math.random()*18)+"px";
-  h.style.animationDuration=(3+Math.random()*3)+"s";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),6000);
-}
-function burstHearts(x,y,n){
-  for(let k=0;k<n;k++) spawnHeart(x+(Math.random()*180-90), y+(Math.random()*80-40));
-  addHearts(n);
-}
-setInterval(()=>{ spawnHeart(Math.random()*innerWidth, innerHeight+20); addHearts(1); }, 900);
-addEventListener("click", e=>burstHearts(e.clientX,e.clientY,10), {passive:true});
+function spawnHeart(x,y){const h=document.createElement("div");h.className="heart";h.textContent=heartEmojis[(Math.random()*heartEmojis.length)|0];h.style.left=x+"px";h.style.top=y+"px";h.style.fontSize=(14+Math.random()*18)+"px";h.style.animationDuration=(3+Math.random()*3)+"s";document.body.appendChild(h);setTimeout(()=>h.remove(),6000);}
+function burstHearts(x,y,n){for(let k=0;k<n;k++)spawnHeart(x+(Math.random()*180-90),y+(Math.random()*80-40));addHearts(n);}
+setInterval(()=>{spawnHeart(Math.random()*innerWidth,innerHeight+20);addHearts(1);},900);
+addEventListener("click",e=>burstHearts(e.clientX,e.clientY,10),{passive:true});
 
 /* Apology generator */
-const apologyBtn=document.getElementById("apologyBtn");
-const apologyOut=document.getElementById("apologyOut");
-const apologies=[
-  "im sorry my love i never mean to hurt you or make you feel sad.",
-  "im sorry baby. i love you and i’m listening. come here 🥺",
-  "im sorry my love. you matter to me more than my ego. 💗"
-];
-apologyBtn.addEventListener("click", ()=>{
-  apologyOut.style.display="block";
-  apologyOut.textContent=apologies[(Math.random()*apologies.length)|0];
-});
-
-/* Rain + Piano (generated in-browser) */
-let audioCtx=null, rainOn=false, pianoOn=false, rainNode=null, rainGain=null, pianoTimer=null;
-function ensureAudio(){ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }
-
-function startRain(){
-  ensureAudio();
-  const bufferSize=2*audioCtx.sampleRate;
-  const noiseBuffer=audioCtx.createBuffer(1,bufferSize,audioCtx.sampleRate);
-  const out=noiseBuffer.getChannelData(0);
-  for(let k=0;k<bufferSize;k++) out[k]=Math.random()*2-1;
-  const white=audioCtx.createBufferSource(); white.buffer=noiseBuffer; white.loop=true;
-
-  const filter=audioCtx.createBiquadFilter();
-  filter.type="lowpass"; filter.frequency.value=900;
-
-  rainGain=audioCtx.createGain(); rainGain.gain.value=0.0;
-  white.connect(filter); filter.connect(rainGain); rainGain.connect(audioCtx.destination);
-  white.start(); rainNode=white;
-  rainGain.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime+0.6);
-}
-function stopRain(){
-  if(rainGain) rainGain.gain.linearRampToValueAtTime(0.0, audioCtx.currentTime+0.4);
-  setTimeout(()=>{ try{rainNode&&rainNode.stop()}catch(e){} rainNode=null; rainGain=null; },500);
-}
-function playPianoNote(freq, when, dur){
-  const osc=audioCtx.createOscillator();
-  const gain=audioCtx.createGain();
-  osc.type="triangle"; osc.frequency.value=freq;
-  gain.gain.setValueAtTime(0.0001,when);
-  gain.gain.exponentialRampToValueAtTime(0.08,when+0.02);
-  gain.gain.exponentialRampToValueAtTime(0.0001,when+dur);
-  osc.connect(gain); gain.connect(audioCtx.destination);
-  osc.start(when); osc.stop(when+dur+0.02);
-}
-function startPiano(){
-  ensureAudio();
-  const scale=[261.63,293.66,329.63,392.00,440.00]; // C D E G A
-  let step=0;
-  pianoTimer=setInterval(()=>{
-    const now=audioCtx.currentTime;
-    const f1=scale[step%scale.length];
-    const f2=scale[(step+2)%scale.length]/2;
-    playPianoNote(f1,now,0.6);
-    playPianoNote(f2,now,0.8);
-    step++;
-  },900);
-}
-function stopPiano(){ if(pianoTimer) clearInterval(pianoTimer); pianoTimer=null; }
-
-const rainBtn=document.getElementById("rainBtn");
-const pianoBtn=document.getElementById("pianoBtn");
-rainBtn.addEventListener("click", ()=>{
-  rainOn=!rainOn;
-  if(rainOn){ startRain(); rainBtn.textContent="rain: on 🌧️"; }
-  else{ stopRain(); rainBtn.textContent="rain: off 🌧️"; }
-});
-pianoBtn.addEventListener("click", ()=>{
-  pianoOn=!pianoOn;
-  if(pianoOn){ ensureAudio(); startPiano(); pianoBtn.textContent="piano: on 🎹"; }
-  else{ stopPiano(); pianoBtn.textContent="piano: off 🎹"; }
-});
-
-/* SIDE SCROLL LETTERS (YOU WRITE THESE HERE) */
-const LETTERS = {
-  mad:  { title:"Open when mad 😠",  text:"\n\n I love you. I’m sorry. I’m listening. I want to fix it, not fight you. 💗" },
-  sad:  { title:"Open when sad 😔",  text:"\n\n Come here. You don’t have to carry it alone. I’m with you always. 💙" },
-  miss: { title:"Open when you miss me 🥺", text:"\n\n I miss you too. Pretend this is a hug. 🥺💗" }
-};
-
-const overlay=document.getElementById("drawerOverlay");
-const drawer=document.getElementById("drawer");
-const dTitle=document.getElementById("drawerTitle");
-const dText=document.getElementById("drawerText");
-const closeBtn=document.getElementById("drawerClose");
-
-function openLetter(key){
-  const L=LETTERS[key];
-  dTitle.textContent=L.title;
-  dText.textContent=L.text;
-  overlay.classList.add("show");
-  drawer.classList.add("show");
-  drawer.setAttribute("aria-hidden","false");
-}
-function closeLetter(){
-  drawer.classList.remove("show");
-  overlay.classList.remove("show");
-  drawer.setAttribute("aria-hidden","true");
-}
-document.querySelectorAll(".sideBtn").forEach(b=>{
-  b.addEventListener("click", ()=>openLetter(b.dataset.letter));
-});
-overlay.addEventListener("click", closeLetter);
-closeBtn.addEventListener("click", closeLetter);
-
-/* Sparkle cursor */
-const c=document.getElementById("sparkles"),ctx=c.getContext("2d");
-let W,H; function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
-addEventListener("resize", resize); resize();
-const p=[];
-function addSparkle(x,y){
-  for(let k=0;k<3;k++){
-    p.push({x,y,vx:(Math.random()*2-1)*1.8,vy:(Math.random()*2-1)*1.8,life:1,r:1+Math.random()*2.2});
-  }
-}
-addEventListener("mousemove", e=>addSparkle(e.clientX,e.clientY), {passive:true});
-(function draw(){
-  ctx.clearRect(0,0,W,H);
-  for(let k=p.length-1;k>=0;k--){
-    const s=p[k];
-    s.x+=s.vx; s.y+=s.vy; s.vy+=0.03; s.life-=0.03;
-    if(s.life<=0){p.splice(k,1); continue;}
-    ctx.globalAlpha=Math.max(s.life,0);
-    ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    ctx.fillStyle="white"; ctx.fill();
-  }
-  ctx.globalAlpha=1; requestAnimationFrame(draw);
-})();
-</script>
-</body>
-</html>
-
-
+const apologyBtn=document.getElementById("apologyBtn"),apologyOut=document.getElementById("apologyOut");
+const apologies=["im sorry my love i never mean to hurt you or make you feel sad.","im sorry baby. i love you and i’m listening. come here 🥺","im sorry my love. you matter to me more than my ego. 💗"];
+apologyBtn.addEventListener("click",()=>{apologyOut
