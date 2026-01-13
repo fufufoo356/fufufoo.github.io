@@ -253,27 +253,6 @@ madBtn.addEventListener("click",()=>{
   crMeme.style.display = mad ? "none" : "block";
 });
 
-/* Countdown */
-const cdEl=document.getElementById("countdown");
-function getNextJan12(){
-  const now=new Date(),y=now.getFullYear();
-  let t=new Date(y,0,12,0,0,0);
-  if(now>t) t=new Date(y+1,0,12,0,0,0);
-  return t;
-}
-const target=getNextJan12();
-function tickCountdown(){
-  const now=new Date(),diff=target-now;
-  if(diff<=0){ cdEl.textContent="IT’S JANUARY 12 🎉💗"; return; }
-  const total=Math.floor(diff/1000),
-        d=Math.floor(total/86400),
-        h=Math.floor((total%86400)/3600),
-        m=Math.floor((total%3600)/60),
-        s=total%60;
-  cdEl.textContent=`${d}d ${h}h ${m}m ${s}s`;
-}
-tickCountdown();
-setInterval(tickCountdown,1000);
 
 /* Hearts floating */
 const heartEmojis=["💗","💞","💖","💘","💕","❤️"];
