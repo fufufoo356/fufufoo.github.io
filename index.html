@@ -136,16 +136,19 @@ button,select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;curs
     <div class="row">
       <span class="pill">Hearts: <span id="heartCount">0</span> 💞</span>
       <span class="pill">Paneer: <span id="paneerCount">0</span> 🧀</span>
-      <button id="paneerBtn" class="smallBtn">+ paneer 🧀</button>
+      <button id="paneerBtn" class="smallBtn" type="button">+ paneer 🧀</button>
 
-      <button id="apologyBtn" class="smallBtn">apology generator 🥺</button>
-      <button id="rainBtn" class="smallBtn">rain: off 🌧️</button>
-      <button id="pianoBtn" class="smallBtn">piano: off 🎹</button>
+      <button id="apologyBtn" class="smallBtn" type="button">apology generator 🥺</button>
+      <button id="rainBtn" class="smallBtn" type="button">rain: off 🌧️</button>
+      <button id="pianoBtn" class="smallBtn" type="button">piano: off 🎹</button>
+
+      <!-- NEW: theme toggle -->
+      <button id="themeBtn" class="smallBtn" type="button">theme: pink 🎀</button>
     </div>
 
     <div id="apologyOut" style="margin-top:10px;color:#444;background:#f8f9fa;border-radius:14px;padding:10px;display:none;"></div>
 
-    <button class="openBtn" id="openBtn" style="margin-top:14px;">Open the envelope 💌</button>
+    <button class="openBtn" id="openBtn" style="margin-top:14px;" type="button">Open the envelope 💌</button>
     <span class="hint">open this when you’re mad at me</span>
 
     <div class="envelope" id="envelope">
@@ -155,7 +158,7 @@ button,select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;curs
 
     <div class="secret" id="secret">“I love you ❤️ Open this when you’re mad at me. I made it for you because I love you so can I have 5 diamond cartier ples dadi💗.”</div>
 
-    <button class="madBtn" id="madBtn">still mad? 😠</button>
+    <button class="madBtn" id="madBtn" type="button">still mad? 😠</button>
 
     <div class="timeline">
       <h3>Timeline of us 💞</h3>
@@ -172,15 +175,24 @@ button,select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;curs
       <div class="small"> Many more coming </div>
     </div>
 
+    <!-- NEW: forever quote box -->
+    <div class="shineBox" style="margin-top:14px;">
+      <h3>Forever ♾️</h3>
+      <p style="margin:0;color:#444;line-height:1.45;">
+        “In every lifetime and every universe, I know you’re meant to be mine,
+        and no matter the lifetime or universe, I would still choose you no matter what.
+        My heart would always find its way to you.”<br>
+        “I have a feeling we will always find our way back to each other.”<br>
+        <b>– Eva to Akhil</b>
+      </p>
+    </div>
 
+    <!-- Poems button section (fixed) -->
+    <div style="margin-top:14px;">
+      <button id="poemBtn" class="smallBtn" type="button">read my poems for you 📖💗</button>
 
-<!-- Poems button section -->
-<div style="margin-top:14px;">
-  <button id="poemBtn" class="smallBtn">read my poems for you 📖💗</button>
-
-  <div id="poemsBox" style="display:none; margin-top:10px; background:#fff0f6; border-radius:14px; padding:12px; color:#444; text-align:left;">
-    <p style="white-space:pre-wrap; line-height:1.45;">
-
+      <div id="poemsBox" style="display:none; margin-top:10px; background:#fff0f6; border-radius:14px; padding:12px; color:#444; text-align:left;">
+        <p style="white-space:pre-wrap; line-height:1.45; margin:0;">
 He loves paneer like it’s written in his DNA,
 Blocks of it vanish by the end of the day.
 Milk in his fridge? A sacred supply,
@@ -201,11 +213,10 @@ Between reactions and borrowed time,
 Something sparked — unplanned, sublime.
 Funny how love didn’t need a chart or degree,
 Just one moment in chemistry — you and me.
-    </p>
-  </div>
-</div>
+        </p>
+      </div>
+    </div>
 
-    
     <img id="crMeme" src="https://media.tenor.com/w2mCAR7kgUsAAAAM/clash-royale-emotes.gif" alt="clash royale laugh" style="width:140px;margin:10px auto;border-radius:12px;display:none;">
   </div>
 </div>
@@ -238,14 +249,15 @@ document.getElementById("timeMsg").textContent =
   (hour>=18 || hour<5) ? "Goodnight my love 🌙" :
   "Thinking of you 💗";
 
-/* Daily quote (added paneer joke) */
+/* Daily quote (added paneer joke + find our way back) */
 const quotes=[
   "You are my favorite person.",
   "I’m on your team. Always.",
   "I love you in every mood.",
   "You + me = home.",
   "Even when we’re annoyed… I still choose you.",
-  "Fun fact: you are 60% paneer at this point 🧀💀 (and I still love you)"
+  "Fun fact: you are 60% paneer at this point 🧀💀 (and I still love you)",
+  "I have a feeling we will always find our way back to each other."
 ];
 const todayKey=new Date().toISOString().slice(0,10);
 let savedQuoteKey=localStorage.getItem("evaQuoteDay"),
@@ -267,7 +279,7 @@ function addHearts(n){
 }
 heartCountEl.textContent=String(heartCount);
 
-/* Paneer counter (NEW) */
+/* Paneer counter */
 const paneerCountEl=document.getElementById("paneerCount");
 const paneerBtn=document.getElementById("paneerBtn");
 let paneerCount=Number(localStorage.getItem("evaPaneerCount")||"0");
@@ -277,35 +289,6 @@ function addPaneer(n){
   paneerCountEl.textContent=String(paneerCount);
 }
 paneerCountEl.textContent=String(paneerCount);
-paneerBtn.addEventListener("click",()=>{
-  addPaneer(1);
-  burstHearts(innerWidth/2, innerHeight/2, 6);
-});
-
-/* Envelope + secret */
-const openBtn=document.getElementById("openBtn"),
-      envelope=document.getElementById("envelope"),
-      secret=document.getElementById("secret");
-openBtn.addEventListener("click",()=>{
-  envelope.classList.add("show");
-  setTimeout(()=>envelope.classList.toggle("open"),50);
-  setTimeout(()=>secret.classList.toggle("show"),650);
-  burstHearts(innerWidth/2,innerHeight/2,18);
-});
-
-/* Still mad */
-const madBtn=document.getElementById("madBtn"),
-      crMeme=document.getElementById("crMeme"),
-      card=document.getElementById("card");
-let mad=true;
-madBtn.addEventListener("click",()=>{
-  mad=!mad;
-  madBtn.textContent = mad ? "still mad? 😠" : "I'm sorry my love. I’ll listen… even if you’re mad AND eating paneer 🧀🥺";
-  madBtn.classList.toggle("love",!mad);
-  card.classList.toggle("heartbeat",!mad);
-  crMeme.style.display = mad ? "none" : "block";
-});
-
 
 /* Hearts floating */
 const heartEmojis=["💗","💞","💖","💘","💕","❤️"];
@@ -325,7 +308,46 @@ function burstHearts(x,y,n){
   addHearts(n);
 }
 setInterval(()=>{ spawnHeart(Math.random()*innerWidth, innerHeight+20); addHearts(1); },900);
-addEventListener("click",e=>burstHearts(e.clientX,e.clientY,10),{passive:true});
+
+/* IMPORTANT: don’t burst hearts when clicking buttons (prevents interference) */
+addEventListener("click",(e)=>{
+  if(e.target.closest("button")) return;   // <- key fix
+  if(e.target.closest("#drawer")) return;
+  burstHearts(e.clientX,e.clientY,10);
+},{passive:true});
+
+/* Paneer button */
+paneerBtn.addEventListener("click",(e)=>{
+  e.stopPropagation();
+  addPaneer(1);
+  burstHearts(innerWidth/2, innerHeight/2, 6);
+});
+
+/* Envelope + secret */
+const openBtn=document.getElementById("openBtn"),
+      envelope=document.getElementById("envelope"),
+      secret=document.getElementById("secret");
+openBtn.addEventListener("click",(e)=>{
+  e.stopPropagation();
+  envelope.classList.add("show");
+  setTimeout(()=>envelope.classList.toggle("open"),50);
+  setTimeout(()=>secret.classList.toggle("show"),650);
+  burstHearts(innerWidth/2,innerHeight/2,18);
+});
+
+/* Still mad */
+const madBtn=document.getElementById("madBtn"),
+      crMeme=document.getElementById("crMeme"),
+      card=document.getElementById("card");
+let mad=true;
+madBtn.addEventListener("click",(e)=>{
+  e.stopPropagation();
+  mad=!mad;
+  madBtn.textContent = mad ? "still mad? 😠" : "I'm sorry my love. I’ll listen… even if you’re mad AND eating paneer 🧀🥺";
+  madBtn.classList.toggle("love",!mad);
+  card.classList.toggle("heartbeat",!mad);
+  crMeme.style.display = mad ? "none" : "block";
+});
 
 /* Apology generator */
 const apologyBtn=document.getElementById("apologyBtn"),
@@ -335,12 +357,13 @@ const apologies=[
   "im sorry baby. i love you and i’m listening. come here 🥺",
   "im sorry my love. you matter to me more than my ego. 💗"
 ];
-apologyBtn.addEventListener("click",()=>{
+apologyBtn.addEventListener("click",(e)=>{
+  e.stopPropagation();
   apologyOut.style.display="block";
   apologyOut.textContent=apologies[(Math.random()*apologies.length)|0];
 });
 
-/* Rain + Piano (fixed) */
+/* Rain + Piano */
 const rainBtn=document.getElementById("rainBtn");
 const pianoBtn=document.getElementById("pianoBtn");
 
@@ -414,13 +437,15 @@ function stopPiano(){
   pianoTimer=null;
 }
 
-rainBtn.addEventListener("click",()=>{
+rainBtn.addEventListener("click",(e)=>{
+  e.stopPropagation();
   rainOn=!rainOn;
   if(rainOn){ startRain(); rainBtn.textContent="rain: on 🌧️"; }
   else{ stopRain(); rainBtn.textContent="rain: off 🌧️"; }
 });
 
-pianoBtn.addEventListener("click",()=>{
+pianoBtn.addEventListener("click",(e)=>{
+  e.stopPropagation();
   pianoOn=!pianoOn;
   if(pianoOn){ startPiano(); pianoBtn.textContent="piano: on 🎹"; }
   else{ stopPiano(); pianoBtn.textContent="piano: off 🎹"; }
@@ -450,24 +475,48 @@ function closeLetter(){
   overlay.classList.remove("show");
   drawer.setAttribute("aria-hidden","true");
 }
-document.querySelectorAll(".sideBtn").forEach(b=>b.addEventListener("click",()=>openLetter(b.dataset.letter)));
+document.querySelectorAll(".sideBtn").forEach(b=>b.addEventListener("click",(e)=>{ e.stopPropagation(); openLetter(b.dataset.letter); }));
 overlay.addEventListener("click",closeLetter);
 closeBtn.addEventListener("click",closeLetter);
 
+/* Poems toggle (SAFE + won’t crash) */
+addEventListener("load", () => {
+  const poemBtn = document.getElementById("poemBtn");
+  const poemsBox = document.getElementById("poemsBox");
+  if(!poemBtn || !poemsBox) return;
 
-/* Poems toggle */
-const poemBtn = document.getElementById("poemBtn");
-const poemsBox = document.getElementById("poemsBox");
-
-poemBtn.addEventListener("click", () => {
-  const open = poemsBox.style.display === "block";
-  poemsBox.style.display = open ? "none" : "block";
-  poemBtn.textContent = open
-    ? "read my poems for you 📖💗"
-    : "close poems 🫶";
+  poemBtn.addEventListener("click",(e)=>{
+    e.stopPropagation();
+    const open = getComputedStyle(poemsBox).display !== "none";
+    poemsBox.style.display = open ? "none" : "block";
+    poemBtn.textContent = open ? "read my poems for you 📖💗" : "close poems 🫶";
+    burstHearts(innerWidth/2, innerHeight/2, 10);
+  });
 });
 
-  
+/* Theme toggle (NEW) */
+const themeBtn = document.getElementById("themeBtn");
+const themes = [
+  {name:"pink",     bg:"#ffe6f0", label:"theme: pink 🎀"},
+  {name:"lavender", bg:"#efe6ff", label:"theme: lavender 💜"},
+  {name:"sky",      bg:"#e6f3ff", label:"theme: sky 💙"},
+  {name:"mint",     bg:"#e6fff2", label:"theme: mint 💚"},
+];
+let themeIndex = Number(localStorage.getItem("evaThemeIndex")||"0");
+function applyTheme(idx){
+  themeIndex = idx % themes.length;
+  document.body.style.background = themes[themeIndex].bg;
+  themeBtn.textContent = themes[themeIndex].label;
+  localStorage.setItem("evaThemeIndex", String(themeIndex));
+}
+applyTheme(themeIndex);
+
+themeBtn.addEventListener("click",(e)=>{
+  e.stopPropagation();
+  applyTheme(themeIndex+1);
+  burstHearts(innerWidth/2, innerHeight/2, 12);
+});
+
 /* Sparkles cursor */
 const c=document.getElementById("sparkles"),
       ctx=c.getContext("2d");
