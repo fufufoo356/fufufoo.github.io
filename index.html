@@ -157,12 +157,11 @@ button,select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;curs
 
     <button class="madBtn" id="madBtn">still mad? 😠</button>
 
-    <div id="countdownBox"><div style="font-weight:900;color:#c2255c;">Countdown to January 12 🎀</div><div id="countdown" style="font-size:18px;margin-top:6px;">Loading…</div></div>
-
     <div class="timeline">
       <h3>Timeline of us 💞</h3>
       <div class="tItem"><div class="dot"></div><div class="tText"><b>End of August:</b> we met 🥺</div></div>
       <div class="tItem"><div class="dot"></div><div class="tText"><b>Halloween:</b> we started dating 🎃💕</div></div>
+      <div class="tItem"><div class="dot"></div><div class="tText"><b>September</b> we conquered chem building u had green new balances 🎃💕</div></div>
       <div class="tItem"><div class="dot"></div><div class="tText"><b>Jan 13:</b> you gave me a handmade and real bouquet 🥺</div></div>
       <div class="tItem"><div class="dot"></div><div class="tText"><b>Jan 13:</b> we made our first videooooo 😈</div></div>
     </div>
@@ -207,7 +206,7 @@ document.getElementById("timeMsg").textContent =
 
 /* Daily quote (added paneer joke) */
 const quotes=[
-  "You are my favorite notification.",
+  "You are my favorite person.",
   "I’m on your team. Always.",
   "I love you in every mood.",
   "You + me = home.",
@@ -273,27 +272,6 @@ madBtn.addEventListener("click",()=>{
   crMeme.style.display = mad ? "none" : "block";
 });
 
-/* Countdown */
-const cdEl=document.getElementById("countdown");
-function getNextJan12(){
-  const now=new Date(),y=now.getFullYear();
-  let t=new Date(y,0,12,0,0,0);
-  if(now>t) t=new Date(y+1,0,12,0,0,0);
-  return t;
-}
-const target=getNextJan12();
-function tickCountdown(){
-  const now=new Date(),diff=target-now;
-  if(diff<=0){ cdEl.textContent="IT’S JANUARY 12 🎉💗"; return; }
-  const total=Math.floor(diff/1000),
-        d=Math.floor(total/86400),
-        h=Math.floor((total%86400)/3600),
-        m=Math.floor((total%3600)/60),
-        s=total%60;
-  cdEl.textContent=`${d}d ${h}h ${m}m ${s}s`;
-}
-tickCountdown();
-setInterval(tickCountdown,1000);
 
 /* Hearts floating */
 const heartEmojis=["💗","💞","💖","💘","💕","❤️"];
