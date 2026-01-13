@@ -172,6 +172,40 @@ button,select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;curs
       <div class="small"> Many more coming </div>
     </div>
 
+
+
+<!-- Poems button section -->
+<div style="margin-top:14px;">
+  <button id="poemBtn" class="smallBtn">read my poems for you 📖💗</button>
+
+  <div id="poemsBox" style="display:none; margin-top:10px; background:#fff0f6; border-radius:14px; padding:12px; color:#444; text-align:left;">
+    <p style="white-space:pre-wrap; line-height:1.45;">
+
+He loves paneer like it’s written in his DNA,
+Blocks of it vanish by the end of the day.
+Milk in his fridge? A sacred supply,
+Gone by morning — don’t ask me why.
+
+While others crave coffee or late-night thrills,
+He’s chasing protein and calcium fills.
+If love were measured in curds and spills,
+He’d marry paneer and drink milk for thrills.
+
+
+We met at the chemistry building — chemistry jokes aside,
+In the building where formulas quietly hide.
+Whiteboards, glass doors, that hallway hum,
+I didn’t know then what we’d become.
+
+Between reactions and borrowed time,
+Something sparked — unplanned, sublime.
+Funny how love didn’t need a chart or degree,
+Just one moment in chemistry — you and me.
+    </p>
+  </div>
+</div>
+
+    
     <img id="crMeme" src="https://media.tenor.com/w2mCAR7kgUsAAAAM/clash-royale-emotes.gif" alt="clash royale laugh" style="width:140px;margin:10px auto;border-radius:12px;display:none;">
   </div>
 </div>
@@ -420,6 +454,20 @@ document.querySelectorAll(".sideBtn").forEach(b=>b.addEventListener("click",()=>
 overlay.addEventListener("click",closeLetter);
 closeBtn.addEventListener("click",closeLetter);
 
+
+/* Poems toggle */
+const poemBtn = document.getElementById("poemBtn");
+const poemsBox = document.getElementById("poemsBox");
+
+poemBtn.addEventListener("click", () => {
+  const open = poemsBox.style.display === "block";
+  poemsBox.style.display = open ? "none" : "block";
+  poemBtn.textContent = open
+    ? "read my poems for you 📖💗"
+    : "close poems 🫶";
+});
+
+  
 /* Sparkles cursor */
 const c=document.getElementById("sparkles"),
       ctx=c.getContext("2d");
