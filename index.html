@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -170,92 +170,288 @@ button,select{border:0;border-radius:14px;padding:10px 14px;font-weight:800;curs
       <div class="small"> Many more coming </div>
     </div>
 
-    <img id="crMeme" src="https://media.tenor.com/w2mCAR7kgUsAAAAM/clash-royale-emotes.gif" alt="clash royale laugh" style="width:140px;margin:10px auto;border-radius:12px;display:block;">
+    <!-- GIF: starts hidden; will show when "still mad?" toggled -->
+    <img id="crMeme" src="https://media.tenor.com/w2mCAR7kgUsAAAAM/clash-royale-emotes.gif" alt="clash royale laugh" style="width:140px;margin:10px auto;border-radius:12px;display:none;">
   </div>
 </div>
 
 <script>
+/* Fade in */
 addEventListener("load", ()=> document.body.classList.add("loaded"));
 
 /* Typewriter */
-const lines=["Eva & Akhil 💞","I love you ❤️","Hiiiiiiiiiiiiiiiiiiiiiiiii baby","I made this while I should be studying but I thought of u 💗","This is where I will send u letters and updates on us and ill wait for u to check it always I messed up the code a little sorry💗actually im charging u 20k for this thanks goodbye and ill alwways love u remember that when u check this website spent days making it"];
+const lines=[
+  "Eva & Akhil 💞",
+  "I love you ❤️",
+  "Hiiiiiiiiiiiiiiiiiiiiiiiii baby",
+  "I made this while I should be studying but I thought of u 💗",
+  "This is where I will send u letters and updates on us and ill wait for u to check it always I messed up the code a little sorry💗actually im charging u 20k for this thanks goodbye and ill alwways love u remember that when u check this website spent days making it"
+];
 let i=0,j=0,del=false;
 const el=document.getElementById("type");
-(function loop(){el.textContent=lines[i].slice(0,del?--j:++j);if(!del&&j===lines[i].length){del=true;return setTimeout(loop,900);}if(del&&j===0){del=false;i=(i+1)%lines.length;}setTimeout(loop,del?25:45);})();
+(function loop(){
+  el.textContent=lines[i].slice(0,del?--j:++j);
+  if(!del && j===lines[i].length){ del=true; return setTimeout(loop,900); }
+  if(del && j===0){ del=false; i=(i+1)%lines.length; }
+  setTimeout(loop,del?25:45);
+})();
 
 /* Time message */
 const hour=new Date().getHours();
-document.getElementById("timeMsg").textContent=(hour>=5&&hour<12)?"Good morning baby ☀️":(hour>=18||hour<5)?"Goodnight my love 🌙":"Thinking of you 💗";
+document.getElementById("timeMsg").textContent =
+  (hour>=5 && hour<12) ? "Good morning baby ☀️" :
+  (hour>=18 || hour<5) ? "Goodnight my love 🌙" :
+  "Thinking of you 💗";
 
 /* Daily quote */
-const quotes=["You are my favorite notification.","I’m on your team. Always.","I love you in every mood.","You + me = home.","Even when we’re annoyed… I still choose you."];
+const quotes=[
+  "You are my favorite notification.",
+  "I’m on your team. Always.",
+  "I love you in every mood.",
+  "You + me = home.",
+  "Even when we’re annoyed… I still choose you."
+];
 const todayKey=new Date().toISOString().slice(0,10);
-let savedQuoteKey=localStorage.getItem("evaQuoteDay"),savedQuote=localStorage.getItem("evaQuoteText");
-if(savedQuoteKey!==todayKey||!savedQuote){savedQuote=quotes[(new Date().getFullYear()*10000+((new Date().getMonth()+1)*100)+new Date().getDate())%quotes.length];localStorage.setItem("evaQuoteDay",todayKey);localStorage.setItem("evaQuoteText",savedQuote);}
+let savedQuoteKey=localStorage.getItem("evaQuoteDay"),
+    savedQuote=localStorage.getItem("evaQuoteText");
+if(savedQuoteKey!==todayKey || !savedQuote){
+  savedQuote=quotes[(new Date().getFullYear()*10000+((new Date().getMonth()+1)*100)+new Date().getDate())%quotes.length];
+  localStorage.setItem("evaQuoteDay",todayKey);
+  localStorage.setItem("evaQuoteText",savedQuote);
+}
 document.getElementById("quoteText").textContent=savedQuote;
 
 /* Heart counter */
 const heartCountEl=document.getElementById("heartCount");
 let heartCount=Number(localStorage.getItem("evaHeartCount")||"0");
-function addHearts(n){heartCount+=n;localStorage.setItem("evaHeartCount",String(heartCount));heartCountEl.textContent=String(heartCount);}
+function addHearts(n){
+  heartCount+=n;
+  localStorage.setItem("evaHeartCount",String(heartCount));
+  heartCountEl.textContent=String(heartCount);
+}
 heartCountEl.textContent=String(heartCount);
 
 /* Envelope + secret */
-const openBtn=document.getElementById("openBtn"),envelope=document.getElementById("envelope"),secret=document.getElementById("secret");
-openBtn.addEventListener("click",()=>{envelope.classList.add("show");setTimeout(()=>envelope.classList.toggle("open"),50);setTimeout(()=>secret.classList.toggle("show"),650);burstHearts(innerWidth/2,innerHeight/2,18);});
+const openBtn=document.getElementById("openBtn"),
+      envelope=document.getElementById("envelope"),
+      secret=document.getElementById("secret");
+openBtn.addEventListener("click",()=>{
+  envelope.classList.add("show");
+  setTimeout(()=>envelope.classList.toggle("open"),50);
+  setTimeout(()=>secret.classList.toggle("show"),650);
+  burstHearts(innerWidth/2,innerHeight/2,18);
+});
 
 /* Still mad */
-const madBtn=document.getElementById("madBtn"),crMeme=document.getElementById("crMeme"),card=document.getElementById("card");
+const madBtn=document.getElementById("madBtn"),
+      crMeme=document.getElementById("crMeme"),
+      card=document.getElementById("card");
 let mad=true;
-madBtn.addEventListener("click",()=>{mad=!mad;madBtn.textContent=mad?"still mad? 😠":"I'm sorry my love, talk to me about what's wrong";madBtn.classList.toggle("love",!mad);card.classList.toggle("heartbeat",!mad);crMeme.style.display=mad?"none":"block";});
+madBtn.addEventListener("click",()=>{
+  mad=!mad;
+  madBtn.textContent = mad ? "still mad? 😠" : "I'm sorry my love, talk to me about what's wrong";
+  madBtn.classList.toggle("love",!mad);
+  card.classList.toggle("heartbeat",!mad);
+  crMeme.style.display = mad ? "none" : "block";
+});
 
 /* Countdown */
 const cdEl=document.getElementById("countdown");
-function getNextJan12(){const now=new Date(),y=now.getFullYear();let t=new Date(y,0,12,0,0,0);if(now>t)t=new Date(y+1,0,12,0,0,0);return t;}
+function getNextJan12(){
+  const now=new Date(),y=now.getFullYear();
+  let t=new Date(y,0,12,0,0,0);
+  if(now>t) t=new Date(y+1,0,12,0,0,0);
+  return t;
+}
 const target=getNextJan12();
-function tickCountdown(){const now=new Date(),diff=target-now;if(diff<=0){cdEl.textContent="IT’S JANUARY 12 🎉💗";return;}const total=Math.floor(diff/1000),d=Math.floor(total/86400),h=Math.floor((total%86400)/3600),m=Math.floor((total%3600)/60),s=total%60;cdEl.textContent=`${d}d ${h}h ${m}m ${s}s`;}
-tickCountdown(); setInterval(tickCountdown,1000);
+function tickCountdown(){
+  const now=new Date(),diff=target-now;
+  if(diff<=0){ cdEl.textContent="IT’S JANUARY 12 🎉💗"; return; }
+  const total=Math.floor(diff/1000),
+        d=Math.floor(total/86400),
+        h=Math.floor((total%86400)/3600),
+        m=Math.floor((total%3600)/60),
+        s=total%60;
+  cdEl.textContent=`${d}d ${h}h ${m}m ${s}s`;
+}
+tickCountdown();
+setInterval(tickCountdown,1000);
 
 /* Hearts floating */
 const heartEmojis=["💗","💞","💖","💘","💕","❤️"];
-function spawnHeart(x,y){const h=document.createElement("div");h.className="heart";h.textContent=heartEmojis[(Math.random()*heartEmojis.length)|0];h.style.left=x+"px";h.style.top=y+"px";h.style.fontSize=(14+Math.random()*18)+"px";h.style.animationDuration=(3+Math.random()*3)+"s";document.body.appendChild(h);setTimeout(()=>h.remove(),6000);}
-function burstHearts(x,y,n){for(let k=0;k<n;k++)spawnHeart(x+(Math.random()*180-90),y+(Math.random()*80-40));addHearts(n);}
-setInterval(()=>{spawnHeart(Math.random()*innerWidth,innerHeight+20);addHearts(1);},900);
+function spawnHeart(x,y){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.textContent=heartEmojis[(Math.random()*heartEmojis.length)|0];
+  h.style.left=x+"px";
+  h.style.top=y+"px";
+  h.style.fontSize=(14+Math.random()*18)+"px";
+  h.style.animationDuration=(3+Math.random()*3)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+}
+function burstHearts(x,y,n){
+  for(let k=0;k<n;k++) spawnHeart(x+(Math.random()*180-90), y+(Math.random()*80-40));
+  addHearts(n);
+}
+setInterval(()=>{ spawnHeart(Math.random()*innerWidth, innerHeight+20); addHearts(1); },900);
 addEventListener("click",e=>burstHearts(e.clientX,e.clientY,10),{passive:true});
 
 /* Apology generator */
-const apologyBtn=document.getElementById("apologyBtn"),apologyOut=document.getElementById("apologyOut");
-const apologies=["im sorry my love i never mean to hurt you or make you feel sad.","im sorry baby. i love you and i’m listening. come here 🥺","im sorry my love. you matter to me more than my ego. 💗"];
-apologyBtn.addEventListener("click",()=>{apologyOut.style.display="block";apologyOut.textContent=apologies[(Math.random()*apologies.length)|0];});
+const apologyBtn=document.getElementById("apologyBtn"),
+      apologyOut=document.getElementById("apologyOut");
+const apologies=[
+  "im sorry my love i never mean to hurt you or make you feel sad.",
+  "im sorry baby. i love you and i’m listening. come here 🥺",
+  "im sorry my love. you matter to me more than my ego. 💗"
+];
+apologyBtn.addEventListener("click",()=>{
+  apologyOut.style.display="block";
+  apologyOut.textContent=apologies[(Math.random()*apologies.length)|0];
+});
 
-/* Rain + Piano */
+/* Rain + Piano (FIXED: define rainBtn/pianoBtn) */
+const rainBtn=document.getElementById("rainBtn");
+const pianoBtn=document.getElementById("pianoBtn");
+
 let audioCtx=null,rainOn=false,pianoOn=false,rainNode=null,rainGain=null,pianoTimer=null;
-function ensureAudio(){if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();}
-function startRain(){ensureAudio();const bufferSize=2*audioCtx.sampleRate;const noiseBuffer=audioCtx.createBuffer(1,bufferSize,audioCtx.sampleRate);const out=noiseBuffer.getChannelData(0);for(let k=0;k<bufferSize;k++)out[k]=Math.random()*2-1;const white=audioCtx.createBufferSource();white.buffer=noiseBuffer;white.loop=true;const filter=audioCtx.createBiquadFilter();filter.type="lowpass";filter.frequency.value=900;rainGain=audioCtx.createGain();rainGain.gain.value=0.0;white.connect(filter);filter.connect(rainGain);rainGain.connect(audioCtx.destination);white.start();rainNode=white;rainGain.gain.linearRampToValueAtTime(0.18,audioCtx.currentTime+0.6);}
-function stopRain(){if(rainGain)rainGain.gain.linearRampToValueAtTime(0.0,audioCtx.currentTime+0.4);setTimeout(()=>{try{rainNode&&rainNode.stop()}catch(e){}rainNode=null;rainGain=null;},500);}
-function playPianoNote(freq,when,dur){const osc=audioCtx.createOscillator();const gain=audioCtx.createGain();osc.type="triangle";osc.frequency.value=freq;gain.gain.setValueAtTime(0.0001,when);gain.gain.exponentialRampToValueAtTime(0.08,when+0.02);gain.gain.exponentialRampToValueAtTime(0.0001,when+dur);osc.connect(gain);gain.connect(audioCtx.destination);osc.start(when);osc.stop(when+dur+0.02);}
-function startPiano(){ensureAudio();const scale=[261.63,293.66,329.63,392.00,440.00];let step=0;pianoTimer=setInterval(()=>{const now=audioCtx.currentTime;const f1=scale[step%scale.length];const f2=scale[(step+2)%scale.length]/2;playPianoNote(f1,now,0.6);playPianoNote(f2,now,0.8);step++;},900);}
-function stopPiano(){if(pianoTimer)clearInterval(pianoTimer);pianoTimer=null;}
-document.getElementById("rainBtn").addEventListener("click",()=>{rainOn=!rainOn;if(rainOn){startRain();rainBtn.textContent="rain: on 🌧️";}else{stopRain();rainBtn.textContent="rain: off 🌧️";}});
-document.getElementById("pianoBtn").addEventListener("click",()=>{pianoOn=!pianoOn;if(pianoOn){ensureAudio();startPiano();pianoBtn.textContent="piano: on 🎹";}else{stopPiano();pianoBtn.textContent="piano: off 🎹";}});
+
+function ensureAudio(){
+  if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+}
+
+function startRain(){
+  ensureAudio();
+  const bufferSize=2*audioCtx.sampleRate;
+  const noiseBuffer=audioCtx.createBuffer(1,bufferSize,audioCtx.sampleRate);
+  const out=noiseBuffer.getChannelData(0);
+  for(let k=0;k<bufferSize;k++) out[k]=Math.random()*2-1;
+
+  const white=audioCtx.createBufferSource();
+  white.buffer=noiseBuffer; white.loop=true;
+
+  const filter=audioCtx.createBiquadFilter();
+  filter.type="lowpass";
+  filter.frequency.value=900;
+
+  rainGain=audioCtx.createGain();
+  rainGain.gain.value=0.0;
+
+  white.connect(filter);
+  filter.connect(rainGain);
+  rainGain.connect(audioCtx.destination);
+
+  white.start();
+  rainNode=white;
+  rainGain.gain.linearRampToValueAtTime(0.18,audioCtx.currentTime+0.6);
+}
+function stopRain(){
+  if(rainGain) rainGain.gain.linearRampToValueAtTime(0.0,audioCtx.currentTime+0.4);
+  setTimeout(()=>{
+    try{ rainNode && rainNode.stop(); }catch(e){}
+    rainNode=null; rainGain=null;
+  },500);
+}
+
+function playPianoNote(freq,when,dur){
+  const osc=audioCtx.createOscillator();
+  const gain=audioCtx.createGain();
+  osc.type="triangle";
+  osc.frequency.value=freq;
+  gain.gain.setValueAtTime(0.0001,when);
+  gain.gain.exponentialRampToValueAtTime(0.08,when+0.02);
+  gain.gain.exponentialRampToValueAtTime(0.0001,when+dur);
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start(when);
+  osc.stop(when+dur+0.02);
+}
+function startPiano(){
+  ensureAudio();
+  const scale=[261.63,293.66,329.63,392.00,440.00];
+  let step=0;
+  pianoTimer=setInterval(()=>{
+    const now=audioCtx.currentTime;
+    const f1=scale[step%scale.length];
+    const f2=scale[(step+2)%scale.length]/2;
+    playPianoNote(f1,now,0.6);
+    playPianoNote(f2,now,0.8);
+    step++;
+  },900);
+}
+function stopPiano(){
+  if(pianoTimer) clearInterval(pianoTimer);
+  pianoTimer=null;
+}
+
+rainBtn.addEventListener("click",()=>{
+  rainOn=!rainOn;
+  if(rainOn){ startRain(); rainBtn.textContent="rain: on 🌧️"; }
+  else{ stopRain(); rainBtn.textContent="rain: off 🌧️"; }
+});
+
+pianoBtn.addEventListener("click",()=>{
+  pianoOn=!pianoOn;
+  if(pianoOn){ startPiano(); pianoBtn.textContent="piano: on 🎹"; }
+  else{ stopPiano(); pianoBtn.textContent="piano: off 🎹"; }
+});
 
 /* Side letters */
-const LETTERS={mad:{title:"Open when mad 😠",text:"\n\n I love you. I’m sorry. I’m listening. I want to fix it, not fight you. 💗"},sad:{title:"Open when sad 😔",text:"\n\n Come here. You don’t have to carry it alone. I’m with you always. 💙"},miss:{title:"Open when you miss me 🥺",text:"\n\n I miss you too. Pretend this is a hug. 🥺💗"}};
-const overlay=document.getElementById("drawerOverlay"),drawer=document.getElementById("drawer"),dTitle=document.getElementById("drawerTitle"),dText=document.getElementById("drawerText"),closeBtn=document.getElementById("drawerClose");
-function openLetter(key){const L=LETTERS[key];dTitle.textContent=L.title;dText.textContent=L.text;overlay.classList.add("show");drawer.classList.add("show");drawer.setAttribute("aria-hidden","false");}
-function closeLetter(){drawer.classList.remove("show");overlay.classList.remove("show");drawer.setAttribute("aria-hidden","true");}
+const LETTERS={
+  mad:{title:"Open when mad 😠",text:"\n\n I love you. I’m sorry. I’m listening. I want to fix it, not fight you. 💗"},
+  sad:{title:"Open when sad 😔",text:"\n\n Come here. You don’t have to carry it alone. I’m with you always. 💙"},
+  miss:{title:"Open when you miss me 🥺",text:"\n\n I miss you too. Pretend this is a hug. 🥺💗"}
+};
+const overlay=document.getElementById("drawerOverlay"),
+      drawer=document.getElementById("drawer"),
+      dTitle=document.getElementById("drawerTitle"),
+      dText=document.getElementById("drawerText"),
+      closeBtn=document.getElementById("drawerClose");
+function openLetter(key){
+  const L=LETTERS[key];
+  dTitle.textContent=L.title;
+  dText.textContent=L.text;
+  overlay.classList.add("show");
+  drawer.classList.add("show");
+  drawer.setAttribute("aria-hidden","false");
+}
+function closeLetter(){
+  drawer.classList.remove("show");
+  overlay.classList.remove("show");
+  drawer.setAttribute("aria-hidden","true");
+}
 document.querySelectorAll(".sideBtn").forEach(b=>b.addEventListener("click",()=>openLetter(b.dataset.letter)));
-overlay.addEventListener("click",closeLetter);closeBtn.addEventListener("click",closeLetter);
+overlay.addEventListener("click",closeLetter);
+closeBtn.addEventListener("click",closeLetter);
 
 /* Sparkles cursor */
-const c=document.getElementById("sparkles"),ctx=c.getContext("2d");let W,H;
-function resize(){W=c.width=innerWidth;H=c.height=innerHeight;}
-addEventListener("resize",resize);resize();
+const c=document.getElementById("sparkles"),
+      ctx=c.getContext("2d");
+let W,H;
+function resize(){ W=c.width=innerWidth; H=c.height=innerHeight; }
+addEventListener("resize",resize); resize();
+
 const p=[];
-function addSparkle(x,y){for(let k=0;k<3;k++)p.push({x,y,vx:(Math.random()*2-1)*1.8,vy:(Math.random()*2-1)*1.8,life:1,r:1+Math.random()*2.2});}
+function addSparkle(x,y){
+  for(let k=0;k<3;k++){
+    p.push({x,y,vx:(Math.random()*2-1)*1.8,vy:(Math.random()*2-1)*1.8,life:1,r:1+Math.random()*2.2});
+  }
+}
 addEventListener("mousemove",e=>addSparkle(e.clientX,e.clientY),{passive:true});
-(function draw(){ctx.clearRect(0,0,W,H);for(let k=p.length-1;k>=0;k--){const s=p[k];s.x+=s.vx;s.y+=s.vy;s.vy+=0.03;s.life-=0.03;if(s.life<=0){p.splice(k,1);continue;}ctx.globalAlpha=Math.max(s.life,0);ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle="white";ctx.fill();}ctx.globalAlpha=1;requestAnimationFrame(draw);})();
+
+(function draw(){
+  ctx.clearRect(0,0,W,H);
+  for(let k=p.length-1;k>=0;k--){
+    const s=p[k];
+    s.x+=s.vx; s.y+=s.vy; s.vy+=0.03; s.life-=0.03;
+    if(s.life<=0){ p.splice(k,1); continue; }
+    ctx.globalAlpha=Math.max(s.life,0);
+    ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle="white"; ctx.fill();
+  }
+  ctx.globalAlpha=1;
+  requestAnimationFrame(draw);
+})();
 </script>
 </body>
 </html>
-
